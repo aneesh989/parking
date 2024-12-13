@@ -16,7 +16,7 @@ const AboutGuest = props => {
         <Text style={styles.Discovery}>Discovery</Text>
       </View>
       <Text style={{textAlign:'center'}}>
-      Parking Buddy connects guests with verified hosts to grant one single wish; Save Money on Parking. Tired of paying overpriced sporting event parking prices; ask the Buddy. Hotel parking prices impacting your vacation or get away budget; ask the Buddy. Everyone wins with Parking Genie.
+      ParkPro connects guests with verified hosts to grant one single wish; Save Money on Parking. Tired of paying overpriced sporting event parking prices; ask the Buddy. Hotel parking prices impacting your vacation or get away budget; ask the Buddy. Everyone wins with Parking Genie.
 Don’t forget to ask the Parking-Buddy for a safe and convenient place to park your Vehicle or dock your Bike.
 
       </Text>

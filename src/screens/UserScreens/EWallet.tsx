@@ -672,7 +672,7 @@ const EWalletStyles = StyleSheet.create({
     padding: 2,
   },
   item: {
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
     opacity: 0.8,
     padding: 20,
     marginVertical: 8,

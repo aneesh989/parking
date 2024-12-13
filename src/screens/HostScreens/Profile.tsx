@@ -53,7 +53,7 @@ import Headerx from '../../components/header';
     justifyContent: 'center',
     marginBottom: 70,
     top: 30,
-    backgroundColor: '#613EEA'}}>
+    backgroundColor: '#0192b1'}}>
             <Text style={{color:'white'}}>Update</Text>
             </TouchableOpacity>
           </View> 

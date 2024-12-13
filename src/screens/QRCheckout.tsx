@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Alert, Dimensions, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import axios from 'axios';
-import url from '../commons/axiosUrl.js';
+import url from '../commons/axiosUrl';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 

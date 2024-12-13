@@ -13,8 +13,8 @@ import {
   ScrollView,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Headerx from '../../components/header.js';
-import colors from '../../commons/Colors.js';
+import Headerx from '../../components/header';
+import colors from '../../commons/Colors';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 export default function GuestSignUp({navigation}) {
@@ -95,7 +95,7 @@ export default function GuestSignUp({navigation}) {
           <TextInput
             style={styles.TextInput}
             placeholder="Enter Your Name"
-            placeholderTextColor="#613EEA"
+            placeholderTextColor="#0192b1"
             onChangeText={name => setName(name)}
           />
         </View>
@@ -104,7 +104,7 @@ export default function GuestSignUp({navigation}) {
           <TextInput
             style={styles.TextInput}
             placeholder="Enter Your Contact Number"
-            placeholderTextColor="#613EEA"
+            placeholderTextColor="#0192b1"
             onChangeText={number => setNumber(number)}
           />
         </View>
@@ -113,7 +113,7 @@ export default function GuestSignUp({navigation}) {
           <TextInput
             style={styles.TextInput}
             placeholder="Enter Your Email"
-            placeholderTextColor="#613EEA"
+            placeholderTextColor="#0192b1"
             onChangeText={email => setEmail(email)}
           />
         </View>

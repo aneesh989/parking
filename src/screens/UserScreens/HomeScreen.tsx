@@ -147,18 +147,9 @@ export default Home = props => {
 
         <View style={styles.titlesWrapper}>
           <Text style={styles.titlesSubtitle}>Find your Parking Space!</Text>
-          {/* <Text style={styles.titlesTitle}>PARKING SPACE</Text> */}
         </View>
 
-        {/* <View style={styles.searchWrapper}>
-          <Feather name="search" size={16} color={colors.black} />
-          <View style={styles.search}>
-            <Text style={styles.searchText}>Search</Text>
-          </View>
-        </View> */}
-
         <View style={styles.categoriesWrapper}>
-          {/* <Text style={styles.categoriesTitle}>Categories</Text> */}
           <View style={styles.categoriesListWrapper}>
             <FlatList
               data={NavItems}

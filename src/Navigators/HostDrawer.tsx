@@ -1,28 +1,44 @@
-import React from 'react';
+import * as React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Home from '../screens/UserScreens/HomeScreen';
-import AllBookings from '../screens/UserScreens/AllBookings';
-import UserDrawerCustom from '../screens/UserScreens/UserDrawerCustom';
+import AllBookings from '../screens/HostScreens/AllBookings';
+import MyMap from '../screens/Map';
+import EWallet from '../screens/UserScreens/EWallet';
+import VisionCamera2 from '../screens/QRCheckout';
+import Profile from '../screens/HostScreens/Profile';
+import HostCustomDrawer from '../screens/HostScreens/HostCustomDrawer';
+import ParkingRegistration from '../screens/HostScreens/ParkingRegistration';
 
 const Drawer = createDrawerNavigator();
 
-const  DrawerNavigator =()=> {
+ function HostDrawer({ navigation }) {
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
-      drawerContent={(props) => <UserDrawerCustom {...props} />}
+      useLegacyImplementation
+      initialRouteName="ParkingBookings"
+      drawerContent={props => <HostCustomDrawer {...props} />}
     >
       <Drawer.Screen
-        name="Home"
-        component={Home}
+        name="ParkingBookings"
+        component={AllBookings}
         options={{ headerShown: false }}
       />
       <Drawer.Screen
-        name="AllBookings"
-        component={AllBookings}
+        name="ParkingRegistration"
+        component={ParkingRegistration}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="EWallet"
+        component={EWallet}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="Profile"
+        component={Profile}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>
   );
 }
-export default DrawerNavigator;
+
+export default HostDrawer;

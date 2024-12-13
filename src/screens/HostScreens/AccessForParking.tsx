@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,Dimensions,Image } from 'react-native'
 import React from 'react'
 import { color } from 'react-native-reanimated';
-import colors from '../../commons/Colors.js';
+import colors from '../../commons/Colors';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import axios from 'axios';
-import url from '../commons/axiosUrl.js';
+import url from '../commons/axiosUrl';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/Ionicons';
 

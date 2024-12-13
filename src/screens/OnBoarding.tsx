@@ -50,7 +50,7 @@ const OnBoarding = ({navigation}) => {
             fontWeight: '500',
             color: colors.themeColor,
           }}>
-          TO PARKING BUDDY
+          TO ParkPro
         </Text>
 
         <Image
@@ -72,7 +72,7 @@ const OnBoarding = ({navigation}) => {
           source={require('../Images/Picture1.png')}
         />
         <Text style={styles.text}>Best Parking Spots</Text>
-        <Text>Be our parking Buddy!</Text>
+        <Text>Be our ParkPro!</Text>
         <TouchableOpacity
           style={styles.skip}
           onPress={() => navigation.navigate('Login')}>
@@ -88,7 +88,7 @@ const OnBoarding = ({navigation}) => {
         />
         <Text style={styles.text}>Quick Navigation</Text>
         <Text style={{fontSize: 15, marginTop: 20, color: 'black'}}>
-          Be our parking Buddy!
+          Be our ParkPro!
         </Text>
         <TouchableOpacity
           style={styles.skip}

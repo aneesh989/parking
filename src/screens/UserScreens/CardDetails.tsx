@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Modal, 
          View, TextInput, Dimensions,Text } from "react-native";
          import axios from 'axios';
-         import url from '../../commons/axiosUrl.js';
+         import url from '../../commons/axiosUrl';
 const { width } = Dimensions.get("window");
 const CardDetails = ({navigation}) => {
     const [isModalVisible, setModalVisible] = useState(false);

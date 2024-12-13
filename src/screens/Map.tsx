@@ -13,7 +13,7 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import useFocusEffect from '@react-navigation/native';
 import * as Location from 'expo-location';
 import MapViewDirections from 'react-native-maps-directions';
-import mapStyle from '../styles/Mapstyle.js';
+import mapStyle from '../styles/Mapstyle';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
@@ -21,10 +21,10 @@ import Geocoder from 'react-native-geocoding';
 import { MD3Colors } from 'react-native-paper';
 import {Button} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import url from '../commons/axiosUrl.js';
+import url from '../commons/axiosUrl';
 import {useNavigation} from '@react-navigation/native';
-import colors from '../commons/Colors.js';
-import Headerx from '../components/header.js';
+import colors from '../commons/Colors';
+import Headerx from '../components/header';
 import color from 'react-native-reanimated';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -246,7 +246,7 @@ const MyMap = props => {
         justifyContent: 'center',
         marginBottom: 70,
         top: 30,
-        backgroundColor: '#613EEA'}}
+        backgroundColor: '#0192b1'}}
         onPress={() => handleClick(this)}>
         <Text style={{color:'white',fontWeight:'bold'}}>BOOK NOW</Text>
       </TouchableOpacity>

@@ -276,7 +276,7 @@ const ParkingRegistration = props => {
         <Text
           style={{
             paddingHorizontal: 10,
-            color: '#613EEA',
+            color: '#0192b1',
             fontWeight: 'bold',
             fontSize: 25,
             backgroundColor: 'white',
@@ -313,21 +313,21 @@ const ParkingRegistration = props => {
           <TextInput
             style={styles.TextInput}
             placeholder="Enter parking Charges (per hr.)"
-            placeholderTextColor={'#613EEA'}
+            placeholderTextColor={'#0192b1'}
             onChangeText={charges => setCharges(charges)}></TextInput>
         </View>
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
             placeholder="Add Check-in Code"
-            placeholderTextColor={'#613EEA'}
+            placeholderTextColor={'#0192b1'}
             onChange={checkin => setCheckin(checkin)}></TextInput>
         </View>
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
             placeholder="Add Check-out Code"
-            placeholderTextColor={'#613EEA'}
+            placeholderTextColor={'#0192b1'}
             onChange={checkout => setCheckout(checkout)}></TextInput>
         </View>
 
@@ -337,7 +337,7 @@ const ParkingRegistration = props => {
             numberOfLines={5}
             multiline={true}
             placeholder="Description"
-            placeholderTextColor={'#613EEA'}
+            placeholderTextColor={'#0192b1'}
             onChangeText={description =>
               setDescription(description)
             }></TextInput>
@@ -355,12 +355,12 @@ const ParkingRegistration = props => {
               setLocaiton(text);
             },
             autoFocus: true,
-            placeholderTextColor: '#613EEA',
+            placeholderTextColor: '#0192b1',
             blurOnSubmit: false,
 
             height: 50,
 
-            color: '#613EEA',
+            color: '#0192b1',
 
             padding: 10,
             marginLeft: 20,
@@ -388,12 +388,12 @@ const ParkingRegistration = props => {
               height: 50,
 
               marginBottom: 30,
-              color: '#613EEA',
+              color: '#0192b1',
 
               alignItems: 'flex-start',
             },
             description: {
-              color: '#613EEA',
+              color: '#0192b1',
               fontSize: 15,
 
               width: '70%',
@@ -403,7 +403,7 @@ const ParkingRegistration = props => {
               flex: 1,
             },
 
-            textInput: {color: '#613EEA'},
+            textInput: {color: '#0192b1'},
             predefinedPlacesDescription: {
               color: '#1faadb',
             },
@@ -458,7 +458,7 @@ const styles = StyleSheet.create({
   TextInput: {
     height: 50,
     flex: 1,
-    color: '#613EEA',
+    color: '#0192b1',
 
     padding: 10,
     marginLeft: 20,
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
   descriptionInput: {
     height: 100,
     flex: 1,
-    color: '#613EEA',
+    color: '#0192b1',
 
     padding: 10,
     marginLeft: 20,
@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
     marginBottom: 120,
 
     marginTop: 35,
-    color: '#613EEA',
+    color: '#0192b1',
   },
 
   loginBtn: {
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
 
   submit: {
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
   ImageBtn: {
     width: '70%',
@@ -511,7 +511,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
   st: {
     color: '#2596be',

@@ -8,8 +8,8 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import colors from '../../commons/Colors.js';
-import Headerx from '../../components/header.js';
+import colors from '../../commons/Colors';
+import Headerx from '../../components/header';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -74,7 +74,7 @@ const Settings = props => {
         {/* <TextInput
           style={styles.TextInput}
           placeholder="Enter Your Desired Parking Radius"
-          placeholderTextColor="#613EEA"
+          placeholderTextColor="#0192b1"
         /> */}
       </View>
       <View
@@ -133,7 +133,7 @@ const Settings = props => {
         {/* <TextInput
       style={styles.TextInput}
       placeholder="Enter Your Desired Parking Radius"
-      placeholderTextColor="#613EEA"
+      placeholderTextColor="#0192b1"
     /> */}
       </View>
     </View>
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   SignUp: {
     height: SCREEN_HEIGHT - 630,
     marginBottom: 80,
-    color: '#613EEA',
+    color: '#0192b1',
   },
 
   loginBtn: {
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 70,
     top: 30,
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
   loginBtn: {
     width: '70%',
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     left: SCREEN_WIDTH / 6.5,
     marginBottom: 70,
     top: 30,
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
 
   st: {

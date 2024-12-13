@@ -11,17 +11,17 @@ import React, {useState, useEffect} from 'react';
 import { MD3Colors } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import url from '../../commons/axiosUrl.js';
+import url from '../../commons/axiosUrl';
 import colors from '../../commons/Colors';
 import Feather from 'react-native-vector-icons/Feather';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Button} from 'react-native-paper';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {getData} from '../../commons/Data.js';
+import {getData} from '../../commons/Data';
 import {useNavigation} from '@react-navigation/native';
-import { SCREEN_WIDTH } from '../../components/units.js';
-import Headerx from '../../components/header.js';
+import { SCREEN_WIDTH } from '../../components/units';
+import Headerx from '../../components/header';
 
 const AllBookings =props => {
   const navigation = useNavigation();
@@ -214,7 +214,7 @@ flex:1,
     padding: 2,
   },
   item: {
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
     opacity: 0.8,
     padding: 20,
     marginVertical: 8,

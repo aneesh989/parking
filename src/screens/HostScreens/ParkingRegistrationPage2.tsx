@@ -83,7 +83,7 @@ const ParkingRegistrationPage2 = props => {
           <Text
             style={{
               paddingHorizontal: 10,
-              color: '#613EEA',
+              color: '#0192b1',
               fontWeight: 'bold',
               fontSize: 25,
               backgroundColor: 'white',
@@ -117,7 +117,7 @@ const ParkingRegistrationPage2 = props => {
                 <TextInput
                   style={formstyles.fieldContainer}
                   placeholder="Enter Code for Check-In"
-                  placeholderTextColor={'#613EEA'}
+                  placeholderTextColor={'#0192b1'}
                   value={checkin}
                   onChange={(checkin) => setCheckin(checkin)}
                 />
@@ -130,7 +130,7 @@ const ParkingRegistrationPage2 = props => {
                 <TextInput
                   style={formstyles.fieldContainer}
                   placeholder="Enter Code for Check-Out"
-                  placeholderTextColor={'#613EEA'}
+                  placeholderTextColor={'#0192b1'}
                   value={checkout}
                   onChange={(checkout) => setCheckout(checkout)}
                 />
@@ -160,10 +160,10 @@ const ParkingRegistrationPage2 = props => {
           },
 
           autoFocus: true,
-          placeholderTextColor: '#613EEA',
+          placeholderTextColor: '#0192b1',
           blurOnSubmit: false,
 
-          color: '#613EEA',
+          color: '#0192b1',
           padding: 10,
           marginLeft: 20,
           backgroundColor: '#f2f3f4',
@@ -195,7 +195,7 @@ const ParkingRegistrationPage2 = props => {
             justifyContent:'center',
           },
           description: {
-            color: '#613EEA',
+            color: '#0192b1',
             fontSize: 15,
 
             alignItems: 'flex-start',
@@ -204,7 +204,7 @@ const ParkingRegistrationPage2 = props => {
             flex: 1,
           },
 
-          textInput: {color: '#613EEA',justifyContent: 'center',top:9},
+          textInput: {color: '#0192b1',justifyContent: 'center',top:9},
           predefinedPlacesDescription: {
             color: '#1faadb',
           },
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   TextInput: {
     height: 50,
     flex: 1,
-    color: '#613EEA',
+    color: '#0192b1',
 
     padding: 10,
     marginLeft: 20,
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   descriptionInput: {
     height: 100,
     flex: 1,
-    color: '#613EEA',
+    color: '#0192b1',
 
     padding: 10,
     marginLeft: 20,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     marginBottom: 120,
 
     marginTop: 35,
-    color: '#613EEA',
+    color: '#0192b1',
   },
 
   loginBtn: {
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
 
   submit: {
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
   ImageBtn: {
     width: '70%',
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    backgroundColor: '#613EEA',
+    backgroundColor: '#0192b1',
   },
   st: {
     color: '#2596be',

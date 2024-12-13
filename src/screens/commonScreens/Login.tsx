@@ -1,248 +1,166 @@
-import React, {useEffect, useState} from 'react';
-import Toast from 'react-native-toast-message';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from "react";
+import Toast from "react-native-toast-message";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
-  Button,
   TouchableOpacity,
-  Switch,
-  Dimensions
-} from 'react-native';
-import Headerx from '../../components/header';
-import {Formik} from 'formik';
-import * as Yup from 'yup';
+  Dimensions,
+} from "react-native";
+import Headerx from "../../components/header";
+import { SafeAreaView } from "react-native-safe-area-context";
+import colors from "../../commons/Colors";
 
-import url from '../../commons/axiosUrl';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import colors  from '../../commons/Colors';
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const Login = ({ navigation }: { navigation: any }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
-export default function Login({navigation}) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [idd, setId] = useState();
-
-
-  const storeData = async value => {
+  const storeData = async (value) => {
     try {
-      console.log("VALUES LoGIN =>>",value);
-      await AsyncStorage.setItem('userdata', value.toString());
+      await AsyncStorage.setItem("userdata", JSON.stringify(value));
+      console.log("Stored user data:", value);
     } catch (e) {
-      // saving error
+      console.error("Error storing data", e);
     }
   };
 
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('userdata');
-      if (value !== null) {
-        value = JSON.parse(value);
-        console.log(value);
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
-
-
-
-  
-      
   const handleClick = async () => {
-    //validation
-    if (email == '' || password == '') {
-      alert('Please fill all the fields');
-      return false;
-    } else {
-      axios
-        .post(
-          url + 'api/authenticate',
-          {username: email, password: password},
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-        .then(response => {
-          
-          console.log(response.data)
-          if (response.data == 'User not found') {
-            alert('User not found!');
-          }
+    if (email === "" || password === "") {
+      alert("Please fill all the fields");
+      return;
+    }
 
+    try {
+      const response = await axios.post(`${url}api/authenticate`, {
+        username: email,
+        password: password,
+      });
 
-          if (response.data.token) {
+      if (response.data === "User not found") {
+        alert("User not found!");
+        return;
+      }
 
+      if (response.data.token) {
+        setEmail("");
+        setPassword("");
+        await storeData(response.data.id);
 
-            setEmail('');
-            setPassword('');
-
-             storeData(response.data.id);
-          //getData();
-
-           // alert(response.data.id + ' - ' + response.data.token);
-            // alert('Login Successfull');
-
-            // navigation.navigate('Imge');
-            response.data.role == null
-              ? alert('Something went wrong')
-              : response.data.role.id == 1
-              ? navigation.navigate('HostDrawer')
-              : navigation.navigate('Drawer');
+        if (response.data.role) {
+          if (response.data.role.id === 1) {
+            navigation.navigate("HostDrawer"); // Host role
           } else {
-            alert('else - ' + response.data);
+            navigation.navigate("Drawer"); // User role
           }
-        })
-        .catch(error =>
-          alert(
-            error.response.status == 404
-              ? 'Invalid Credentials'
-              : error
-          ),
-        );
+        } else {
+          alert("Something went wrong");
+        }
+      } else {
+        alert("Unexpected response: " + response.data);
+      }
+    } catch (error) {
+      alert(
+        error.response?.status === 404 ? "Invalid Credentials" : error.message
+      );
     }
   };
+
   return (
-    <SafeAreaView style={{flex: 1,
-      backgroundColor: colors.white}}>    
-    <Headerx navigation={navigation} headerName={"Login"}/>
-    <View style={styles.container}>
-      <Text
-        style={{
-          paddingHorizontal: 10,
-          color: '#613EEA',
-          fontWeight: 'bold',
-          fontSize: 25,
-          backgroundColor: 'white',
-          marginBottom: 30,
-        }}>
-        LOGIN
-      </Text>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter Your Email"
-          placeholderTextColor="#613EEA"
-          onChangeText={email => setEmail(email)}
-          value={email}
-        />
+    <SafeAreaView style={styles.safeArea}>
+      <Headerx navigation={navigation} headerName="Login" />
+      <View style={styles.container}>
+        <Text style={styles.title}>LOGIN</Text>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter Your Email"
+            placeholderTextColor={colors.themeColor}
+            onChangeText={(value) => setEmail(value)}
+            value={email}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter your Password"
+            placeholderTextColor={colors.themeColor}
+            secureTextEntry={true}
+            onChangeText={(value) => setPassword(value)}
+            value={password}
+          />
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("OnBoarding")}>
+          <Text style={styles.linkText}>Forgot Password?</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.loginBtn} onPress={handleClick}>
+          <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push("SignUpOptions")}>
+          <Text>
+            or <Text style={styles.SignUp}>Sign Up</Text>
+          </Text>
+        </TouchableOpacity>
       </View>
-
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter your Password"
-          value={password}
-          placeholderTextColor="#613EEA"
-          secureTextEntry={true}
-          onChangeText={password => setPassword(password)}
-        />
-      </View>
-
-      {/* <Switch
-        value={isEnabled}
-        style={{marginLeft: -240}}
-        onValueChange={() => {
-          setIsEnabled(isEnabled == true ? false : true);
-        }}
-      /> */}
-      {/* <Text style={{marginLeft: -180, color: '#613EEA'}}>Remember Me</Text> */}
-
-      <TouchableOpacity
-       
-        onPress={() => navigation.navigate('OnBoarding')}>
-        <Text style={{color: '#613EEA'}}>Forgot Password?</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.loginBtn}
-        onPress={() => handleClick(this)}>
-        <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.push('SignUpOptions')}>
-        <Text>
-          or <Text style={styles.SignUp}>Sign Up</Text>{' '}
-        </Text>
-      </TouchableOpacity>
-    </View>
     </SafeAreaView>
-
   );
-}
+};
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundGradient: 'vertical',
-    backgroundGradientTop: '#333333',
-    backgroundGradientBottom: '#666666',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.white,
   },
-
-  image: {
-    marginBottom: 40,
+  title: {
+    paddingHorizontal: 10,
+    color: colors.themeColor,
+    fontWeight: "bold",
+    fontSize: 25,
+    marginBottom: 30,
   },
   inputView: {
     backgroundColor: colors.lightgray,
     borderRadius: 5,
-
-    width: SCREEN_WIDTH/1.2,
-    height: SCREEN_HEIGHT/15,
-
+    width: SCREEN_WIDTH / 1.2,
+    height: SCREEN_HEIGHT / 15,
     marginBottom: 30,
-
-    alignItems: 'flex-start',
+    justifyContent: "center",
+    paddingHorizontal: 10,
   },
-
   TextInput: {
-    height:  SCREEN_HEIGHT/15,
-    flex: 1,
-    color:  colors.themeColor,
-    
-    padding: SCREEN_HEIGHT/50,
-    marginLeft: 20,
+    height: SCREEN_HEIGHT / 15,
+    color: colors.themeColor,
+    padding: SCREEN_HEIGHT / 50,
   },
-
-  SignUp: {
-    height: SCREEN_HEIGHT-630,
-    marginBottom: 80,
-    color: '#613EEA',
+  linkText: {
+    color: colors.themeColor,
   },
-
   loginBtn: {
-    width: '70%',
+    width: "70%",
     borderRadius: 5,
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 70,
-    top: 30,
-    backgroundColor: '#613EEA',
-  },
-
-  st: {
-    color: '#00cca3',
-    fontSize: 20,
-    marginRight: 140,
-  },
-  st1: {
-    color: '#00cca3',
-    fontSize: 20,
-    marginRight: 170,
+    marginTop: 20,
+    backgroundColor: colors.themeColor,
   },
   loginText: {
-    color: '#fff',
+    color: colors.white,
+  },
+  SignUp: {
+    color: colors.themeColor,
   },
 });
+
+export default Login;
