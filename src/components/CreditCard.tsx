@@ -15,7 +15,7 @@ import {
 //   import PasswordIcon from '../../assets/svgs/password.svg';
 //   import VisaIcon from '../../assets/svgs/visa.svg';
   const CreditCard = ({card, selected}) => {
-    const bgColor = card.title === 'visa' ? colors.purple : colors.black;
+    const bgColor = card.title === 'visa' ? colors.themeColor : colors.black;
     return (
       <View style={[styles.container, {backgroundColor: bgColor}]}>
         <View style={styles.icon}>

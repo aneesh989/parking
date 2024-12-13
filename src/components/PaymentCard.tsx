@@ -13,7 +13,6 @@ import {
 //   import PasswordIcon from '../../assets/svgs/password.svg';
 //   import VisaIcon from '../../assets/svgs/visa.svg';
   const PaymentCard = ({onPress, selectedItem, item}) => {
-    //const bgColor = card.title === 'visa' ? colors.purple : colors.black;
     return (
         <View style={styles.paymentMethodContainer}>
           <View style={styles.bodyContainer}>

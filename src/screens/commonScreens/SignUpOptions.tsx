@@ -177,7 +177,7 @@ const homecardstyles = StyleSheet.create({
 });
 const categorycardstyles = StyleSheet.create({
   container: {
-    backgroundColor: colors.purple,
+    backgroundColor: colors.themeColor,
     borderRadius: 5,
     alignItems: "center",
 

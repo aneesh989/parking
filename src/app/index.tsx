@@ -23,7 +23,7 @@ const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator initialRouteName="OnBoarding">
+    <Stack.Navigator initialRouteName="Map">
       <Stack.Screen
         name="OnBoarding"
         component={OnBoarding}

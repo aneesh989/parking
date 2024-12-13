@@ -36,15 +36,24 @@ const Login = ({ navigation }: { navigation: any }) => {
     }
 
     try {
-      const response = await axios.post(`${url}api/authenticate`, {
-        username: email,
-        password: password,
-      });
+      // const response = await axios.post(`${url}api/authenticate`, {
+      //   username: email,
+      //   password: password,
+      // });
+      const response = {
+      data: {
+        token: "mocked_token",
+        id: "mocked_user_id",
+        role: {
+          id: 1, // Change this based on which role you want to test
+        },
+      },
+    };
 
-      if (response.data === "User not found") {
-        alert("User not found!");
-        return;
-      }
+      // if (response.data === "User not found") {
+      //   alert("User not found!");
+      //   return;
+      // }
 
       if (response.data.token) {
         setEmail("");
@@ -94,7 +103,7 @@ const Login = ({ navigation }: { navigation: any }) => {
             value={password}
           />
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("OnBoarding")}>
+        <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
           <Text style={styles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginBtn} onPress={handleClick}>

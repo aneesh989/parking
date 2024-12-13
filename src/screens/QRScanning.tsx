@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     width: rectDimensions,
     height: rectDimensions,
     borderWidth: 2,
-    borderColor: 'purple',
+    borderColor: 'themeColor',
     alignItems: 'center',
     justifyContent: 'center',
   },

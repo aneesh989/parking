@@ -154,10 +154,6 @@ const MyMap = props => {
   return (
     <View >
       <Headerx navigation={props.navigation} headerName={'Find Parkings'} />
-
-
-
-
       <MapView
         customMapStyle={mapStyle}
         mapType="standard"
@@ -202,9 +198,6 @@ const MyMap = props => {
             </Marker>
           );
         })}
-
-
-
         <Marker
           draggable
           coordinate={{
@@ -250,18 +243,10 @@ const MyMap = props => {
         onPress={() => handleClick(this)}>
         <Text style={{color:'white',fontWeight:'bold'}}>BOOK NOW</Text>
       </TouchableOpacity>
-              
               </View>
-
-
-
-            
               <Text style={styles.info}>{charges}</Text>
-
-             
               </View>
               </View>
-
         </View>
       ) : (
         <View></View>
@@ -302,10 +287,8 @@ const styles = StyleSheet.create({
     color: 'black',
     placeholderTextColor: 'black',
   },
-
   body:{
 top:30,
-
   },
   name:{
 fontWeight:'700',

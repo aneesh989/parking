@@ -203,12 +203,6 @@ export default Home = props => {
                       </Text>
                     </View>
                     <View style={styles.ratingWrapper}>
-                      {/* <MaterialCommunityIcons
-                        name="star"
-                        size={10}
-                        color={colors.black}
-                      /> */}
-
                       <View>
                         <TouchableOpacity>
                           <Text style={{color: colors.themeColor}}>

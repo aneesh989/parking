@@ -15,30 +15,30 @@ const Drawer = createDrawerNavigator();
     <Drawer.Navigator
       useLegacyImplementation
       initialRouteName="ParkingBookings"
-      drawerContent={props => <HostCustomDrawer {...props} />}
-    >
+      drawerContent={props => <HostCustomDrawer {...props} />}>
       <Drawer.Screen
         name="ParkingBookings"
         component={AllBookings}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
-      <Drawer.Screen
+    <Drawer.Screen
         name="ParkingRegistration"
         component={ParkingRegistration}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Drawer.Screen
         name="EWallet"
         component={EWallet}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Drawer.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Drawer.Navigator>
   );
+
 }
 
 export default HostDrawer;

@@ -112,7 +112,7 @@ console.log(response)
     return (
       <ActivityIndicator
         size="large"
-        color="#0000ff"
+        color="#0192b1"
         style={{alignSelf: 'center', flex: 1}}
       />
     );
