@@ -65,7 +65,7 @@ export default Home = props => {
       id: 2,
       name: 'Your Wallet',
       image: require('../../Images/wallete.png'),
-      screen: 'E-Wallet',
+      screen: 'EWallet',
     },
     {
       id: 3,

@@ -45,7 +45,7 @@ const Login = ({ navigation }: { navigation: any }) => {
         token: "mocked_token",
         id: "mocked_user_id",
         role: {
-          id: 1, // Change this based on which role you want to test
+          id: 2, // Change this based on which role you want to test
         },
       },
     };
@@ -103,7 +103,7 @@ const Login = ({ navigation }: { navigation: any }) => {
             value={password}
           />
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
+        <TouchableOpacity onPress={() => navigation.push("ForgetPassword")}>
           <Text style={styles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginBtn} onPress={handleClick}>

@@ -17,13 +17,25 @@ import AddRemoveInputField from '../screens/dynamic';
 import Imge from '../screens/HostScreens/ParkingRegistration';
 import AllBookings from '../screens/UserScreens/AllBookings';
 import CardDetails from '../screens/UserScreens/CardDetails';
+import FindParking from './User/FindParking';
+import Garage from './User/Garage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator initialRouteName="Map">
+    <Stack.Navigator initialRouteName="FindParking">
+      <Stack.Screen
+        name="FindParking"
+        component={FindParking}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Garage"
+        component={ Garage}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="OnBoarding"
         component={OnBoarding}
@@ -40,7 +52,7 @@ const App = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="HomeeScreen"
+        name="HomeScreen"
         component={Home}
         options={{ headerShown: false }}
       />
