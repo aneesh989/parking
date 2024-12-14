@@ -61,7 +61,7 @@ const SignUpOptions = ({ navigation }) => {
               color: colors.themeColor,
             }}
           >
-            PARKING HOST
+            Park Men
           </Text>
 
           <TouchableOpacity onPress={() => navigation.navigate("GuestSignUp")}>
@@ -83,7 +83,7 @@ const SignUpOptions = ({ navigation }) => {
               color: colors.themeColor,
             }}
           >
-            SPACE USER
+            Rent Men
           </Text>
         </View>
       </SafeAreaView>

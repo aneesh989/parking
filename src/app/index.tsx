@@ -20,13 +20,15 @@ import CardDetails from '../screens/UserScreens/CardDetails';
 import FindParking from './User/FindParking';
 import Garage from './User/Garage';
 import SplashScreen from '../screens/UserScreens/SplashScreen';
+import ForgetPassword from '../screens/commonScreens/ForgetPassword';
+import HomeD from './User/Home';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator initialRouteName="SplashScreen">
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
@@ -55,6 +57,11 @@ const App = () => {
       <Stack.Screen
         name="HostDrawer"
         component={HostDrawer}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeD}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -115,6 +122,11 @@ const App = () => {
       <Stack.Screen
         name="CardDetails"
         component={CardDetails}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgetPassword"
+        component={ForgetPassword}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

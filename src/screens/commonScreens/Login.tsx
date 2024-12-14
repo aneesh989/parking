@@ -16,9 +16,11 @@ import colors from "../../commons/Colors";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
+
 const Login = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const storeData = async (value) => {
     try {
@@ -36,24 +38,13 @@ const Login = ({ navigation }: { navigation: any }) => {
     }
 
     try {
-      // const response = await axios.post(`${url}api/authenticate`, {
-      //   username: email,
-      //   password: password,
-      // });
       const response = {
-      data: {
-        token: "mocked_token",
-        id: "mocked_user_id",
-        role: {
-          id: 2, // Change this based on which role you want to test
+        data: {
+          token: "mocked_token",
+          id: "mocked_user_id",
+          role: { id: 2 },
         },
-      },
-    };
-
-      // if (response.data === "User not found") {
-      //   alert("User not found!");
-      //   return;
-      // }
+      };
 
       if (response.data.token) {
         setEmail("");
@@ -62,9 +53,9 @@ const Login = ({ navigation }: { navigation: any }) => {
 
         if (response.data.role) {
           if (response.data.role.id === 1) {
-            navigation.navigate("HostDrawer"); // Host role
+            navigation.navigate("HostDrawer");
           } else {
-            navigation.navigate("Drawer"); // User role
+            navigation.navigate("Drawer");
           }
         } else {
           alert("Something went wrong");
@@ -83,35 +74,45 @@ const Login = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.safeArea}>
       <Headerx navigation={navigation} headerName="Login" />
       <View style={styles.container}>
-        <Text style={styles.title}>LOGIN</Text>
+        <Text style={styles.title}>Welcome Back!</Text>
+        <Text style={styles.subtitle}>Login to continue</Text>
+
         <View style={styles.inputView}>
+          <Text style={styles.inputLabel}>Username</Text>
           <TextInput
             style={styles.TextInput}
             placeholder="Enter Your Email"
-            placeholderTextColor={colors.themeColor}
+            placeholderTextColor={colors.white}
             onChangeText={(value) => setEmail(value)}
             value={email}
           />
         </View>
         <View style={styles.inputView}>
+          <Text style={styles.inputLabel}>Password</Text>
           <TextInput
             style={styles.TextInput}
             placeholder="Enter your Password"
-            placeholderTextColor={colors.themeColor}
+            placeholderTextColor={colors.white}
             secureTextEntry={true}
             onChangeText={(value) => setPassword(value)}
             value={password}
           />
         </View>
-        <TouchableOpacity onPress={() => navigation.push("ForgetPassword")}>
-          <Text style={styles.linkText}>Forgot Password?</Text>
-        </TouchableOpacity>
+
+        <View style={styles.rememberMeContainer}>
+          <Text style={styles.rememberMeText}>Remember me</Text>
+          <TouchableOpacity onPress={() => navigation.push("ForgetPassword")}>
+            <Text style={styles.forgotPassword}>Forget password?</Text>
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity style={styles.loginBtn} onPress={handleClick}>
-          <Text style={styles.loginText}>LOGIN</Text>
+          <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.push("SignUpOptions")}>
-          <Text>
-            or <Text style={styles.SignUp}>Sign Up</Text>
+          <Text style={styles.footerText}>
+            Don’t have an account? <Text style={styles.signupText}>Sign Up</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -122,53 +123,76 @@ const Login = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: "#000000",
   },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.white,
   },
   title: {
-    paddingHorizontal: 10,
-    color: colors.themeColor,
+    color: "#ffffff",
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 30,
+    marginBottom: 10,
+  },
+  subtitle: {
+    color: "#ffffff",
+    fontSize: 16,
     marginBottom: 30,
   },
   inputView: {
-    backgroundColor: colors.lightgray,
-    borderRadius: 5,
     width: SCREEN_WIDTH / 1.2,
-    height: SCREEN_HEIGHT / 15,
-    marginBottom: 30,
-    justifyContent: "center",
-    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  inputLabel: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    marginBottom: 5,
   },
   TextInput: {
-    height: SCREEN_HEIGHT / 15,
-    color: colors.themeColor,
-    padding: SCREEN_HEIGHT / 50,
+    backgroundColor: "#ffffff",
+    borderRadius: 30,
+    height: 50,
+    paddingHorizontal: 15,
+    color: "#000000",
   },
-  linkText: {
-    color: colors.themeColor,
+  rememberMeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: SCREEN_WIDTH / 1.2,
+    marginBottom: 20,
+  },
+  rememberMeText: {
+    color: "#ffffff",
+    marginLeft: 8,
+  },
+  forgotPassword: {
+    color: "#ffffff",
+    textDecorationLine: "underline",
   },
   loginBtn: {
-    width: "70%",
-    borderRadius: 5,
+    backgroundColor: "#0ea5e9",
+    borderRadius: 30,
     height: 50,
+    width: SCREEN_WIDTH / 1.5,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 70,
-    marginTop: 20,
-    backgroundColor: colors.themeColor,
+    marginBottom: 20,
   },
   loginText: {
-    color: colors.white,
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
-  SignUp: {
-    color: colors.themeColor,
+  footerText: {
+    color: "#ffffff",
+    fontSize: 14,
+  },
+  signupText: {
+    color: "#0ea5e9",
+    fontWeight: "bold",
   },
 });
 

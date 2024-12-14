@@ -1,68 +1,139 @@
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const ForgetPassword = () => {
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
+const ForgotPassword = ({ navigation }: { navigation: any }) => {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [reNewPassword, setReNewPassword] = useState("");
+
+  const handleSave = () => {
+    if (!oldPassword || !newPassword || !reNewPassword) {
+      alert("Please fill all the fields");
+      return;
+    }
+
+    if (newPassword !== reNewPassword) {
+      alert("New passwords do not match");
+      return;
+    }
+
+    // Perform the password update logic here (e.g., API call)
+    alert("Password updated successfully!");
+
+    // Navigate back to the Login page
+    navigation.navigate("Login");
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Forget Password</Text>
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Enter your email" 
-        keyboardType="email-address" 
-      />
-      
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.linkContainer}>
-        <Text style={styles.linkText}>Back to Login</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Reset Password</Text>
+        <Text style={styles.subtitle}>Enter your details to reset your password</Text>
+
+        <View style={styles.inputView}>
+          <Text style={styles.inputLabel}>Old Password</Text>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter your old password"
+            placeholderTextColor="#ccc"
+            secureTextEntry={true}
+            onChangeText={(value) => setOldPassword(value)}
+            value={oldPassword}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <Text style={styles.inputLabel}>New Password</Text>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter your new password"
+            placeholderTextColor="#ccc"
+            secureTextEntry={true}
+            onChangeText={(value) => setNewPassword(value)}
+            value={newPassword}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <Text style={styles.inputLabel}>Re-enter New Password</Text>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Re-enter your new password"
+            placeholderTextColor="#ccc"
+            secureTextEntry={true}
+            onChangeText={(value) => setReNewPassword(value)}
+            value={reNewPassword}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+          <Text style={styles.saveText}>Save</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
-export default ForgetPassword;
-
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#000000",
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  title: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: 30,
+    marginBottom: 10,
   },
-  input: {
-    width: '100%',
-    padding: 15,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: '#fff',
+  subtitle: {
+    color: "#ffffff",
     fontSize: 16,
-    textAlign: 'center',
+    marginBottom: 30,
   },
-  linkContainer: {
-    marginTop: 10,
+  inputView: {
+    width: SCREEN_WIDTH / 1.2,
+    marginBottom: 20,
   },
-  linkText: {
-    color: '#007BFF',
+  inputLabel: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  TextInput: {
+    backgroundColor: "#ffffff",
+    borderRadius: 30,
+    height: 50,
+    paddingHorizontal: 15,
+    color: "#000000",
+  },
+  saveBtn: {
+    backgroundColor: "#0ea5e9",
+    borderRadius: 30,
+    height: 50,
+    width: SCREEN_WIDTH / 1.5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  saveText: {
+    color: "#ffffff",
+    fontWeight: "bold",
     fontSize: 16,
   },
 });
+
+export default ForgotPassword;
