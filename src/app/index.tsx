@@ -19,13 +19,24 @@ import AllBookings from '../screens/UserScreens/AllBookings';
 import CardDetails from '../screens/UserScreens/CardDetails';
 import FindParking from './User/FindParking';
 import Garage from './User/Garage';
+import SplashScreen from '../screens/UserScreens/SplashScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator initialRouteName="FindParking">
+    <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="OnBoarding"
+        component={OnBoarding}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="FindParking"
         component={FindParking}
@@ -34,11 +45,6 @@ const App = () => {
       <Stack.Screen
         name="Garage"
         component={ Garage}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="OnBoarding"
-        component={OnBoarding}
         options={{ headerShown: false }}
       />
       <Stack.Screen
