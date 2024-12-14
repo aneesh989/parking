@@ -87,7 +87,7 @@ const GarageApp = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>ParkPro</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
         <AntDesign  name="close" size={24} color="black" />
           {/* <Text style={styles.closeButton}>X</Text> */}
         </TouchableOpacity>
@@ -111,7 +111,7 @@ const GarageApp = ({ navigation }: { navigation: any }) => {
       {/* Continue Button */}
       <TouchableOpacity
         style={styles.continueButton}
-        onPress={() => navigation.navigate("HomeScreen")}
+        onPress={() => navigation.navigate("Home")}
         disabled={!selectedSlot}
       >
         <Text style={styles.continueText}>Continue</Text>

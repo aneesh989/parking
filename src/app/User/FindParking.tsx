@@ -11,11 +11,13 @@ import {
 import { MaterialIcons, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
+import colors from "../../commons/Colors";
 
 export default function ParkingApp() {
   const navigation = useNavigation();
   const [selectedVehicle, setSelectedVehicle] = useState("Car");
   const [searchQuery, setSearchQuery] = useState("");
+
 
   const parkingData = [
     {
@@ -177,7 +179,7 @@ export default function ParkingApp() {
           <FontAwesome5
             name="car"
             size={20}
-            color={selectedVehicle === "Car" ? "blue" : "gray"}
+            color={selectedVehicle === "Car" ? colors.themeColor : "gray"}
           />
           <Text style={styles.iconLabel}>Car</Text>
         </TouchableOpacity>
@@ -188,7 +190,7 @@ export default function ParkingApp() {
           <FontAwesome5
             name="bicycle"
             size={20}
-            color={selectedVehicle === "Bike" ? "blue" : "gray"}
+            color={selectedVehicle === "Bike" ? colors.themeColor : "gray"}
           />
           <Text style={styles.iconLabel}>Bike</Text>
         </TouchableOpacity>
@@ -199,7 +201,7 @@ export default function ParkingApp() {
           <FontAwesome5
             name="truck"
             size={20}
-            color={selectedVehicle === "Van" ? "blue" : "gray"}
+            color={selectedVehicle === "Van" ? colors.themeColor : "gray"}
           />
           <Text style={styles.iconLabel}>Van</Text>
         </TouchableOpacity>
@@ -210,7 +212,7 @@ export default function ParkingApp() {
           <FontAwesome5
             name="motorcycle"
             size={20}
-            color={selectedVehicle === "Scooter" ? "blue" : "gray"}
+            color={selectedVehicle === "Scooter" ? colors.themeColor : "gray"}
           />
           <Text style={styles.iconLabel}>Scooter</Text>
         </TouchableOpacity>
@@ -224,22 +226,6 @@ export default function ParkingApp() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
       />
-
-      {/* Bottom Tabs */}
-      <View style={styles.bottomTabs}>
-        <TouchableOpacity>
-          <Ionicons name="home" size={24} color="blue" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="map" size={24} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="document-text-outline" size={24} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="person" size={24} color="gray" />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -281,6 +267,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     marginLeft: 10,
+    padding: 14,
   },
   iconContainer: {
     flexDirection: "row",
@@ -328,7 +315,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   parkingPrice: {
-    color: "blue",
+    color: colors.themeColor,
     fontWeight: "bold",
   },
   bottomTabs: {

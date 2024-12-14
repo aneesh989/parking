@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Home from '../screens/UserScreens/HomeScreen';
+import Home from '../app/User/Home';
 import AllBookings from '../screens/UserScreens/AllBookings';
 import MyMap from '../screens/Map';
 import UserDrawerCustom from '../screens/UserScreens/UserDrawerCustom';
