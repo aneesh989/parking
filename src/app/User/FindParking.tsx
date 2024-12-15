@@ -11,10 +11,13 @@ import {
 import { MaterialIcons, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux"; // Import useDispatch
+import { setParkingData } from "../../../Redux/parkingSlice"; // Import Redux action
 import colors from "../../commons/Colors";
 
 export default function ParkingApp() {
   const navigation = useNavigation();
+  const dispatch = useDispatch(); // Initialize dispatch
   const [selectedVehicle, setSelectedVehicle] = useState("Car");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -26,15 +29,15 @@ export default function ParkingApp() {
       location: 'Clifton, Karachi',
       price: 100,
       availability: '20 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Clifton_Crossing%2C_Karachi.jpg', // Clifton image
+      image: require('../../Images/ParkingSpots/1.jpg'),      // Local image
     },
     {
       id: '2',
       name: 'WSCC Main Garage',
-      location: 'DHA, Karachi',
+      location: 'DHA 5, Karachi',
       price: 150,
       availability: '15 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/f/f2/DHA_Phase_8_Karachi.jpg', // DHA image
+      image: require('../../Images/ParkingSpots/2.webp'), // Local image
     },
     {
       id: '3',
@@ -42,7 +45,7 @@ export default function ParkingApp() {
       location: 'North Nazimabad, Karachi',
       price: 80,
       availability: '25 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/4/48/North_Nazimabad_Karachi.jpg', // North Nazimabad image
+      image: require('../../Images/ParkingSpots/3.webp'), // Local image
     },
     {
       id: '4',
@@ -50,15 +53,15 @@ export default function ParkingApp() {
       location: 'Gulshan-e-Iqbal, Karachi',
       price: 120,
       availability: '18 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/0/06/Gulshan_e_Iqbal_Karachi.jpg', // Gulshan-e-Iqbal image
+      image: require('../../Images/ParkingSpots/4.webp'), // Local image
     },
     {
       id: '5',
       name: 'Hyperstar Parking',
-      location: 'University Road, Karachi',
+      location: 'DHA 5, Karachi',
       price: 90,
       availability: '22 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/3/37/Karachi_University_Road.jpg', // University Road image
+      image: require('../../Images/ParkingSpots/5.webp'), // Local image
     },
     {
       id: '6',
@@ -66,7 +69,7 @@ export default function ParkingApp() {
       location: 'Tariq Road, Karachi',
       price: 130,
       availability: '10 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Tariq_Road_Karachi.jpg', // Tariq Road image
+      image: require('../../Images/ParkingSpots/6.webp'), // Local image
     },
     {
       id: '7',
@@ -74,7 +77,7 @@ export default function ParkingApp() {
       location: 'Clifton, Karachi',
       price: 110,
       availability: '30 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Clifton_Beach.jpg', // Clifton Beach image
+      image: require('../../Images/ParkingSpots/7.webp'), // Local image
     },
     {
       id: '8',
@@ -82,7 +85,7 @@ export default function ParkingApp() {
       location: 'Shahrah-e-Faisal, Karachi',
       price: 140,
       availability: '12 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Shahrah-e-Faisal.jpg', // Shahrah-e-Faisal image
+      image: require('../../Images/ParkingSpots/8.webp'), // Local image
     },
     {
       id: '9',
@@ -90,7 +93,7 @@ export default function ParkingApp() {
       location: 'Korangi, Karachi',
       price: 100,
       availability: '20 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Korangi_Industrial_Area.jpg', // Korangi image
+      image: require('../../Images/ParkingSpots/2.webp'), // Local image
     },
     {
       id: '10',
@@ -98,9 +101,10 @@ export default function ParkingApp() {
       location: 'Nazimabad, Karachi',
       price: 85,
       availability: '28 spots',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/Nazimabad_Karachi.jpg', // Nazimabad image
+      image: require('../../Images/ParkingSpots/1.jpg'), // Local image
     },
   ];
+   
 
   const calculatePrice = (price) => {
     switch (selectedVehicle) {
@@ -120,18 +124,25 @@ export default function ParkingApp() {
       item.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const handleParkingSelection = (item) => {
+    const parkingDetails = {
+      name: item.name,
+      location: item.location,
+      price: calculatePrice(item.price),
+      availability: item.availability,
+    };
+
+    // Dispatch parking data to Redux store
+    dispatch(setParkingData(parkingDetails));
+
+    // Navigate to Garage page
+    navigation.navigate("Garage");
+  };
 
   const renderParkingItem = ({ item }) => (
     <TouchableOpacity
       style={styles.parkingItem}
-      onPress={() =>
-        navigation.navigate("Garage", {
-          name: item.name,
-          location: item.location,
-          price: calculatePrice(item.price),
-          availability: item.availability,
-        })
-      }
+      onPress={() => handleParkingSelection(item)} // Call handleParkingSelection
     >
       <Image source={{ uri: item.image }} style={styles.parkingImage} />
       <View style={styles.parkingDetails}>
@@ -143,16 +154,15 @@ export default function ParkingApp() {
       </View>
     </TouchableOpacity>
   );
-
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Image
-          source={{ uri: "https://via.placeholder.com/50" }}
+          source={require("../../Images/avtar.png")}
           style={styles.profileImage}
         />
-        <Text style={styles.greeting}>Good Morning, Michael</Text>
+        <Text style={styles.greeting}>Good Morning, Anish</Text>
         <Ionicons name="notifications-outline" size={24} color="black" />
       </View>
 

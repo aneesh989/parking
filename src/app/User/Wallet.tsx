@@ -7,7 +7,7 @@ const WalletPage = () => {
       id: '1',
       type: 'Mastercard',
       number: '3056****5904',
-      holder: 'Ivan Horvat',
+      holder: 'Danish',
       expiry: '06/26',
       icon: require('../../Images//masterCard.png'), // Replace with the actual path to your Mastercard logo
     },
@@ -15,7 +15,7 @@ const WalletPage = () => {
       id: '2',
       type: 'Visa Electron',
       number: '5213****4854',
-      holder: 'Ivan Horvat',
+      holder: 'Danish',
       expiry: '06/26',
       icon: require('../../Images/visa.png'), // Replace with the actual path to your Visa logo
     },
@@ -29,9 +29,9 @@ const WalletPage = () => {
           <Text style={styles.backButtonText}>{'<'}</Text>
         </TouchableOpacity>
         <Text style={styles.headerText}>Select payment method</Text>
-        <TouchableOpacity style={styles.cardIconContainer}>
+        {/* <TouchableOpacity style={styles.cardIconContainer}>
           <Text style={styles.cardIcon}>\uD83D\uDCB3</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {/* Account Section */}
@@ -39,15 +39,15 @@ const WalletPage = () => {
         <Text style={styles.sectionTitle}>Cards</Text>
         <View style={styles.accountContainer}>
           <View style={styles.accountDetails}>
-            <View style={styles.accountIcon} />
+          <Image
+          source={require("../../Images/avtar.png")}
+          style={styles.profileImage}
+        />
             <View>
-              <Text style={styles.accountBalance}>HRK 60.00</Text>
+              <Text style={styles.accountBalance}>Balance Rs:1200</Text>
               <Text style={styles.accountLabel}>Account</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.topUpButton}>
-            <Text style={styles.topUpText}>+ Top up</Text>
-          </TouchableOpacity>
         </View>
       </View>
 
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 20,
   },
   backButton: {
@@ -127,6 +126,7 @@ const styles = StyleSheet.create({
   accountDetails: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 10,
   },
   accountIcon: {
     width: 40,
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   accountBalance: {
-    color: '#0f0',
+    color: '#0192b1',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   topUpButton: {
     padding: 10,
-    backgroundColor: '#0f0',
+    backgroundColor: '#0192b1',
     borderRadius: 10,
   },
   topUpText: {
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   addButton: {
     alignSelf: 'flex-end',
     padding: 10,
-    backgroundColor: '#0f0',
+    backgroundColor: '#0192b1',
     borderRadius: 10,
   },
   addText: {
@@ -171,10 +171,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
-  cardIcon: {
+  profileImage: {
     width: 40,
     height: 40,
-    marginRight: 10,
+    borderRadius: 20,
   },
   cardNumber: {
     color: '#fff',

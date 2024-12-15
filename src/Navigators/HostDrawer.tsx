@@ -12,11 +12,8 @@ const Drawer = createDrawerNavigator();
 
  function HostDrawer({ navigation }) {
   return (
-    <Drawer.Navigator
-      useLegacyImplementation
-      initialRouteName="ParkingBookings"
-      drawerContent={props => <HostCustomDrawer {...props} />}>
-      <Drawer.Screen
+    <Drawer.Navigator>
+      {/* <Drawer.Screen
         name="ParkingBookings"
         component={AllBookings}
         options={{headerShown: false}}
@@ -35,7 +32,7 @@ const Drawer = createDrawerNavigator();
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 

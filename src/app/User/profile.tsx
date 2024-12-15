@@ -1,29 +1,30 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity>
           <Icon name="arrow-left" size={20} color="#fff" style={styles.backIcon} />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
           <Icon name="cog" size={20} color="#fff" style={styles.settingsIcon} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: "https://via.placeholder.com/100" }}
+             source={require("../../Images/avtar.png")}
           style={styles.profileImage}
         />
         <TouchableOpacity style={styles.editIconContainer}>
           <Icon name="pencil" size={15} color="#fff" style={styles.editIcon} />
         </TouchableOpacity>
-        <Text style={styles.profileName}>GFXAgency</Text>
-        <Text style={styles.profileSubtitle}>UI-UX DESIGN</Text>
+        <Text style={styles.profileName}>Name</Text>
       </View>
 
       <View style={styles.inputContainer}>
@@ -69,7 +70,7 @@ const ProfileScreen = () => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.logoutButton}>
+      <TouchableOpacity style={styles.logoutButton} onPress={()=>{navigation.navigate("Login")}}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     right: 120,
-    backgroundColor: "#007bff",
+    backgroundColor: "#0192b1",
     borderRadius: 20,
     padding: 5,
   },
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   logoutButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#0192b1",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",

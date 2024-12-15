@@ -15,20 +15,25 @@ import VisionCamera from '../screens/QRScanning';
 import VisionCamera2 from '../screens/QRCheckout';
 import AddRemoveInputField from '../screens/dynamic';
 import Imge from '../screens/HostScreens/ParkingRegistration';
-import AllBookings from '../screens/UserScreens/AllBookings';
+import AllBookings from '.././app/User/bookings';
 import CardDetails from '../screens/UserScreens/CardDetails';
+import Settings from '../screens/UserScreens/Settings';
 import FindParking from './User/FindParking';
 import Garage from './User/Garage';
 import SplashScreen from '../screens/UserScreens/SplashScreen';
 import ForgetPassword from '../screens/commonScreens/ForgetPassword';
 import HomeD from './User/Home';
+import Wallet from './User/Wallet';
+import { Provider } from 'react-redux'; // Import Provider
+import store from '../../Redux/Store'; // Import the Redux store
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator initialRouteName="SplashScreen">
+    <Provider store={store}>
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
@@ -80,11 +85,6 @@ const App = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Map"
-        component={MyMap}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="GuestSignUp"
         component={GuestSignUp}
         options={{ headerShown: false }}
@@ -92,6 +92,37 @@ const App = () => {
       <Stack.Screen
         name="SignUpOptions"
         component={SignUpOptions}
+        options={{ headerShown: false }}
+      />
+      
+      <Stack.Screen
+        name="Booking"
+        component={AllBookings}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="Wallet"
+        component={Wallet}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CardDetails"
+        component={CardDetails}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgetPassword"
+        component={ForgetPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={Settings}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="Map"
+        component={MyMap}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -114,22 +145,9 @@ const App = () => {
         component={Imge}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="AllBookings"
-        component={AllBookings}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="CardDetails"
-        component={CardDetails}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ForgetPassword"
-        component={ForgetPassword}
-        options={{ headerShown: false }}
-      />
+      
     </Stack.Navigator>
+     </Provider>
   );
 }
 

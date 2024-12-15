@@ -1,7 +1,8 @@
-import { navigate} from "expo-router";
-import React, { useState } from "react";
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRoute } from '@react-navigation/native';
+import React, { useState, useEffect } from "react";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useSelector, useDispatch } from "react-redux";
+import { setParkingData } from "../../../Redux/parkingSlice";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   View,
   Text,
@@ -10,137 +11,139 @@ import {
   StyleSheet,
   Modal,
   SafeAreaView,
-  Image,
 } from "react-native";
 
 const GarageApp = ({ navigation }: { navigation: any }) => {
-  const [selectedGarage, setSelectedGarage] = useState("Garage A");
-  const [slots, setSlots] = useState(generateSlots(30)); // Dynamically generate slots
+  const dispatch = useDispatch();
+  const parkingData = useSelector((state: any) => state.parking); // Access parking data from Redux
+
+  const [sections, setSections] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [checkoutVisible, setCheckoutVisible] = useState(false);
-  const route = useRoute(); // Access route params
-  const { name, location, price, availability } = route.params;
 
-  // Function to simulate navigation
- 
+  // Time management
+  const [startTime, setStartTime] = useState(getCurrentTime());
+  const [endTime, setEndTime] = useState("");
+  const [isTimePickerVisible, setTimePickerVisible] = useState(false);
 
-  function generateSlots(totalSlots) {
-    let garages = [];
-    for (let i = 0; i < totalSlots; i++) {
-      garages.push({
-        id: i + 1,
-        garage: `Garage ${String.fromCharCode(65 + Math.floor(i / 12))}`,
-        name: `${600 + i + 1}`,
+  useEffect(() => {
+    const generatedSections = generateSections();
+    setSections(generatedSections);
+    autoSelectFirstAvailableSlot(generatedSections); // Automatically select first available slot
+  }, []);
+
+  // Generate sections and slots dynamically
+  function generateSections() {
+    const sectionLabels = ["A", "B", "C", "D"];
+    return sectionLabels.map((label) => ({
+      label,
+      slots: Array.from({ length: 12 }, (_, index) => ({
+        id: `${label}-${index + 1}`,
+        name: `Slot ${label}-${index + 1}`,
         available: Math.random() > 0.3, // Random availability
-      });
-    }
-    return garages;
+      })),
+    }));
   }
 
-  const onSlotPress = (slot) => {
-    setSelectedSlot(slot);
-    setCheckoutVisible(true);
+  // Automatically select the first available slot
+  const autoSelectFirstAvailableSlot = (sections: any) => {
+    for (const section of sections) {
+      const availableSlot = section.slots.find((slot: any) => slot.available);
+      if (availableSlot) {
+        setSelectedSlot(availableSlot);
+        setCheckoutVisible(true); // Show booking confirmation
+        break;
+      }
+    }
   };
 
-  const renderSlot = ({ item }) => {
-    const isSelected = selectedSlot && selectedSlot.id === item.id;
-    return (
-      <TouchableOpacity
-        style={[
-          styles.slot,
-          item.available ? styles.availableSlot : styles.unavailableSlot,
-          isSelected && styles.selectedSlot,
-        ]}
-        disabled={!item.available}
-        onPress={() => onSlotPress(item)}
-      >
-        {!item.available && (
-          <Image
-          source={require('../../Images/car.png')}
-            style={styles.carIcon}
-          />
-        )}
-        <Text style={styles.slotText}>{item.name}</Text>
-        {item.available && <Text style={styles.statusText}>Available</Text>}
-      </TouchableOpacity>
+  // Get current time in "hh:mm AM/PM" format
+  function getCurrentTime() {
+    const date = new Date();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes < 10 ? "0" : ""}${minutes} ${ampm}`;
+  }
+
+  const showTimePicker = () => setTimePickerVisible(true);
+  const hideTimePicker = () => setTimePickerVisible(false);
+
+  const handleConfirmTime = (time: Date) => {
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedTime = `${hours % 12 || 12}:${
+      minutes < 10 ? "0" : ""
+    }${minutes} ${ampm}`;
+    setEndTime(formattedTime);
+    hideTimePicker();
+  };
+
+  const handleBooking = () => {
+    if (!endTime) {
+      alert("Please select an end time");
+      return;
+    }
+
+    // Update Redux with the selected slot and times
+    dispatch(
+      setParkingData({
+        ...parkingData, // Keep existing data (location, price, etc.)
+        slot: selectedSlot?.name,
+        startTime,
+        endTime,
+      })
     );
-  };
 
-  const renderGarageOptions = () => {
-    const garageNames = [...new Set(slots.map((slot) => slot.garage))];
-    return garageNames.map((garage) => (
-      <TouchableOpacity
-        key={garage}
-        style={[
-          styles.garageOption,
-          selectedGarage === garage && styles.selectedGarage,
-        ]}
-        onPress={() => setSelectedGarage(garage)}
-      >
-        <Text style={styles.garageText}>{garage}</Text>
-      </TouchableOpacity>
-    ));
+    setCheckoutVisible(false);
+    navigation.navigate("Booking"); // Navigate to Booking page
   };
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>ParkPro</Text>
+        <Text style={styles.title}>Garage Slots</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-        <AntDesign  name="close" size={24} color="black" />
-          {/* <Text style={styles.closeButton}>X</Text> */}
+          <AntDesign name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
-      {/* Location */}
-      <Text style={styles.location}>{name}</Text>
+      {/* Parking Details */}
+      <View style={styles.detailsContainer}>
+        <Text style={styles.detailText}>Location: {parkingData.location}</Text>
+        <Text style={styles.detailText}>Name: {parkingData.name}</Text>
+        <Text style={styles.detailText}>Price: ₹ {parkingData.price} /hr</Text>
+      </View>
 
-      {/* Slots */}
-      <FlatList
-        data={slots.filter((slot) => slot.garage === selectedGarage)}
-        renderItem={renderSlot}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={3}
-        contentContainerStyle={styles.slotList}
-      />
+      {/* Confirm Booking Slide */}
+      {checkoutVisible && selectedSlot && (
+        <View style={styles.bookingSlide}>
+          <Text style={styles.confirmTitle}>Confirm Booking</Text>
+          <Text style={styles.confirmDetail}>Slot: {selectedSlot?.name}</Text>
+          <Text style={styles.confirmDetail}>Start Time: {startTime}</Text>
+          <TouchableOpacity
+            onPress={showTimePicker}
+            style={styles.timePickerButton}
+          >
+            <Text style={styles.confirmDetail}>
+              End Time: {endTime || "Select End Time"}
+            </Text>
+          </TouchableOpacity>
 
-      {/* Garage Options */}
-      <View style={styles.garageContainer}>{renderGarageOptions()}</View>
+          <DateTimePickerModal
+            isVisible={isTimePickerVisible}
+            mode="time"
+            onConfirm={handleConfirmTime}
+            onCancel={hideTimePicker}
+          />
 
-      {/* Continue Button */}
-      <TouchableOpacity
-        style={styles.continueButton}
-        onPress={() => navigation.navigate("Home")}
-        disabled={!selectedSlot}
-      >
-        <Text style={styles.continueText}>Continue</Text>
-      </TouchableOpacity>
-
-      {/* Checkout Modal */}
-      {checkoutVisible && (
-        <Modal
-          transparent={true}
-          visible={checkoutVisible}
-          animationType="slide"
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Confirm Booking</Text>
-              <Text style={styles.modalText}>
-                Parking Place: {selectedSlot?.name}
-              </Text>
-              <Text style={styles.modalText}>Garage: {selectedGarage}</Text>
-              <Text style={styles.modalText}>{price}</Text>
-              <TouchableOpacity
-                style={styles.bookButton}
-                onPress={() => setCheckoutVisible(false)}
-              >
-                <Text style={styles.bookText}>Book</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+          <TouchableOpacity style={styles.bookButton} onPress={handleBooking}>
+            <Text style={styles.bookText}>Book Now</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </SafeAreaView>
   );
@@ -156,113 +159,55 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 16,
     backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1,
-    borderBottomColor: "#DDD",
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
   },
-  closeButton: {
-    fontSize: 18,
-    color: "#888",
-  },
-  location: {
-    fontSize: 16,
-    textAlign: "center",
-    marginVertical: 16,
-  },
-  slotList: {
+  detailsContainer: {
     paddingHorizontal: 16,
-  },
-  slot: {
-    flex: 1,
-    margin: 8,
-    padding: 16,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    position: "relative",
-  },
-  availableSlot: {
-    borderColor: "#00C851",
-  },
-  unavailableSlot: {
-    borderColor: "#D9534F",
-    backgroundColor: "#F9F9F9",
-  },
-  selectedSlot: {
-    backgroundColor: "#007BFF",
-  },
-  slotText: {
-    fontSize: 16,
-  },
-  statusText: {
-    fontSize: 12,
-    color: "#888",
-  },
-  carIcon: {
-    width: 24,
-    height: 24,
-    position: "absolute",
-    top: 8,
-  },
-  garageContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginVertical: 16,
-  },
-  garageOption: {
-    marginHorizontal: 8,
-    padding: 8,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: "#888",
-  },
-  selectedGarage: {
-    backgroundColor: "#007BFF",
-  },
-  garageText: {
-    color: "#000",
-  },
-  continueButton: {
-    margin: 36,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "#007BFF",
-    alignItems: "center",
-  },
-  continueText: {
-    color: "#FFFFFF",
-    fontWeight: "bold",
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  modalContent: {
+    paddingVertical: 10,
     backgroundColor: "#FFFFFF",
-    padding: 16,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderRadius: 8,
+    marginBottom: 10,
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  modalText: {
+  detailText: {
     fontSize: 16,
-    marginVertical: 4,
+    color: "#333",
+  },
+  bookingSlide: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    elevation: 5,
+    alignItems: "center",
+  },
+  confirmTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  confirmDetail: {
+    fontSize: 16,
+    color: "#333",
+    marginVertical: 5,
+  },
+  timePickerButton: {
+    backgroundColor: "#ddd",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginVertical: 10,
   },
   bookButton: {
-    marginTop: 16,
-    padding: 16,
-    borderRadius: 8,
     backgroundColor: "#007BFF",
-    alignItems: "center",
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 10,
   },
   bookText: {
     color: "#FFFFFF",
