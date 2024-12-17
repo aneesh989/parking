@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MaterialIcons, Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux"; // Import useDispatch
@@ -16,6 +17,7 @@ import { setParkingData } from "../../../Redux/parkingSlice"; // Import Redux ac
 import colors from "../../commons/Colors";
 
 export default function ParkingApp() {
+  const { name } = useSelector((state: any) => state.user);
   const navigation = useNavigation();
   const dispatch = useDispatch(); // Initialize dispatch
   const [selectedVehicle, setSelectedVehicle] = useState("Car");
@@ -162,7 +164,7 @@ export default function ParkingApp() {
           source={require("../../Images/avtar.png")}
           style={styles.profileImage}
         />
-        <Text style={styles.greeting}>Good Morning, Anish</Text>
+        <Text style={styles.greeting}>Good Morning, {name}</Text>
         <Ionicons name="notifications-outline" size={24} color="black" />
       </View>
 

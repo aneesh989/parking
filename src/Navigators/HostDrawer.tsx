@@ -35,7 +35,5 @@ const Drawer = createDrawerNavigator();
       /> */}
     </Drawer.Navigator>
   );
-
 }
-
 export default HostDrawer;

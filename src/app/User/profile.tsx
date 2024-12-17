@@ -2,9 +2,13 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
+// import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const ProfileScreen = () => {
+  const { name} = useSelector((state: any) => state.user);
   const navigation = useNavigation();
+  // const dispatch = useDispatch();
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -24,7 +28,7 @@ const ProfileScreen = () => {
         <TouchableOpacity style={styles.editIconContainer}>
           <Icon name="pencil" size={15} color="#fff" style={styles.editIcon} />
         </TouchableOpacity>
-        <Text style={styles.profileName}>Name</Text>
+        <Text style={styles.profileName}>{name}</Text>
       </View>
 
       <View style={styles.inputContainer}>
@@ -33,7 +37,7 @@ const ProfileScreen = () => {
           <Icon name="envelope" size={16} color="#fff" style={styles.inputIcon} />
           <TextInput
             style={styles.input}
-            placeholder="xxx@gmail.com"
+            placeholder={`${name}@gmail.com`}
             placeholderTextColor="#999"
           />
         </View>
@@ -43,7 +47,7 @@ const ProfileScreen = () => {
           <Icon name="phone" size={16} color="#fff" style={styles.inputIcon} />
           <TextInput
             style={styles.input}
-            placeholder="+93123135"
+            placeholder="+923332513989"
             placeholderTextColor="#999"
           />
         </View>

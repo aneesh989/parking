@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../../Redux/UserSlice"; // Redux action
 import Toast from "react-native-toast-message";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
@@ -10,17 +11,18 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import Headerx from "../../components/header";
 import { SafeAreaView } from "react-native-safe-area-context";
+import dataset from "./dataset"; // Import dataset
 import colors from "../../commons/Colors";
+import Headerx from "../../components/header";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const Login = ({ navigation }: { navigation: any }) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const dispatch = useDispatch();
 
   const storeData = async (value) => {
     try {
@@ -31,42 +33,45 @@ const Login = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  const validateCredentials = () => {
+    const allUsers = [...dataset.users, ...dataset.hosts];
+    return allUsers.find(
+      (user) =>
+        user.username.toLowerCase() === email.trim().toLowerCase() &&
+        user.password === password.trim()
+    );
+  };
+
   const handleClick = async () => {
     if (email === "" || password === "") {
-      alert("Please fill all the fields");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please fill in all fields",
+      });
       return;
     }
 
-    try {
-      const response = {
-        data: {
-          token: "mocked_token",
-          id: "mocked_user_id",
-          role: { id: 2 },
-        },
-      };
+    const user = validateCredentials();
 
-      if (response.data.token) {
-        setEmail("");
-        setPassword("");
-        await storeData(response.data.id);
+    if (user) {
+      // Save data to AsyncStorage and Redux
+      const userData = { name: user.name, role: user.role, email: user.username };
+      await storeData(userData);
+      dispatch(setUserData(userData));
 
-        if (response.data.role) {
-          if (response.data.role.id === 1) {
-            navigation.navigate("HostDrawer");
-          } else {
-            navigation.navigate("Drawer");
-          }
-        } else {
-          alert("Something went wrong");
-        }
-      } else {
-        alert("Unexpected response: " + response.data);
+      // Navigate based on role
+      if (user.role === "host") {
+        navigation.navigate("HostDrawer");
+      } else if (user.role === "user") {
+        navigation.navigate("Drawer");
       }
-    } catch (error) {
-      alert(
-        error.response?.status === 404 ? "Invalid Credentials" : error.message
-      );
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Invalid Credentials",
+        text2: "Email or password is incorrect",
+      });
     }
   };
 
@@ -77,8 +82,9 @@ const Login = ({ navigation }: { navigation: any }) => {
         <Text style={styles.title}>Welcome Back!</Text>
         <Text style={styles.subtitle}>Login to continue</Text>
 
+        {/* Email Input */}
         <View style={styles.inputView}>
-          <Text style={styles.inputLabel}>Username</Text>
+          <Text style={styles.inputLabel}>Email</Text>
           <TextInput
             style={styles.TextInput}
             placeholder="Enter Your Email"
@@ -87,6 +93,8 @@ const Login = ({ navigation }: { navigation: any }) => {
             value={email}
           />
         </View>
+
+        {/* Password Input */}
         <View style={styles.inputView}>
           <Text style={styles.inputLabel}>Password</Text>
           <TextInput
@@ -99,6 +107,7 @@ const Login = ({ navigation }: { navigation: any }) => {
           />
         </View>
 
+        {/* Remember Me & Forgot Password */}
         <View style={styles.rememberMeContainer}>
           <Text style={styles.rememberMeText}>Remember me</Text>
           <TouchableOpacity onPress={() => navigation.push("ForgetPassword")}>
@@ -106,10 +115,12 @@ const Login = ({ navigation }: { navigation: any }) => {
           </TouchableOpacity>
         </View>
 
+        {/* Login Button */}
         <TouchableOpacity style={styles.loginBtn} onPress={handleClick}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
 
+        {/* Sign Up Option */}
         <TouchableOpacity onPress={() => navigation.push("SignUpOptions")}>
           <Text style={styles.footerText}>
             Don’t have an account? <Text style={styles.signupText}>Sign Up</Text>

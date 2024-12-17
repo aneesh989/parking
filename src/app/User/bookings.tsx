@@ -75,9 +75,9 @@ export default function BookingScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.bookingItem}>
-            <Text style={styles.bookingText}>Location: {item.location}</Text>
-            <Text style={styles.bookingText}>Price: {item.price}</Text>
-            <Text style={styles.bookingText}>Date: {item.date}</Text>
+            <Text style={styles.bookingText}>{item.location}</Text>
+            <Text style={styles.bookingText}>{item.date}</Text>
+            <Text style={styles.bookingText}>Rs {item.price}</Text>
           </View>
         )}
         contentContainerStyle={styles.listContainer}
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   listContainer: {
+    backgroundColor: "black",
     padding: 20,
   },
   headerContainer: {
@@ -201,14 +202,20 @@ const styles = StyleSheet.create({
   },
   bookingItem: {
     backgroundColor: "white",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 15,
     marginVertical: 10,
     borderRadius: 10,
     width: "90%",
     alignSelf: "center",
+    gap:10,
   },
   bookingText: {
-    fontSize: 16,
+    flex: 1,
+    marginVertical: 2,
+    fontSize: 12,
     color: "black",
   },
   stopButton: {
