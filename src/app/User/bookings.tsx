@@ -7,8 +7,9 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { setParkingData, resetParkingData, addCompletedBooking } from "../../../Redux/parkingSlice";
 
 const dummyData = [
   { id: "1", location: "Sector 18, Noida", price: "50", date: "15 Dec 2024" },
@@ -19,112 +20,150 @@ const dummyData = [
   { id: "6", location: "Clifton, Karachi", price: "220", date: "3 Dec 2024" },
 ];
 
-function getCurrentTime() {
-  const date = new Date();
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes < 10 ? "0" : ""}${minutes} ${ampm}`;
-}
-
 export default function BookingScreen() {
-  const bookingData = useSelector((state) => state.parking);
-  const [progressHeight, setProgressHeight] = useState("0%");
-  const [buttonText, setButtonText] = useState("Stop");
-  const [currentTime, setCurrentTime] = useState(getCurrentTime());
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const parkingData = useSelector((state) => state.parking); // Access active booking
+  const completedBookings = useSelector((state) => state.parking.completedBookings);
 
-  const updateProgress = () => {
-    if (bookingData?.startTime && bookingData?.endTime) {
-      const startTime = new Date(bookingData.startTime).getTime();
-      const endTime = new Date(bookingData.endTime).getTime();
-      const totalDuration = endTime - startTime;
-      const elapsed = Math.max(currentTime - startTime, 0);
-
-      const progress = Math.min((elapsed / totalDuration) * 100, 100);
-      setProgressHeight(`${progress}%`);
-
-      if (currentTime >= endTime) {
-        setButtonText("Complete");
-      } else {
-        setButtonText("Stop");
-      }
-    } else {
-      setProgressHeight("0%");
-      setButtonText("Stop");
-    }
-  };
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [newlyCompletedBooking, setNewlyCompletedBooking] = useState(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentTime(getCurrentTime());
+      setCurrentTime(new Date());
+
+      if (parkingData.startTime && parkingData.endTime) {
+        const endTime = new Date(parkingData.endTime);
+        if (currentTime >= endTime) {
+          handleStopParking(); // Stop parking automatically if end time reached
+        }
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [currentTime, parkingData]);
 
-  useEffect(() => {
-    updateProgress();
-  }, [currentTime, bookingData]);
+  const handleStopParking = () => {
+    const completedBooking = {
+      id: new Date().getTime(),
+      location: parkingData.location,
+      name: parkingData.name,
+      price: parkingData.price,
+      slot: parkingData.slot,
+      startTime: parkingData.startTime,
+      endTime: parkingData.endTime,
+      date: new Date().toLocaleDateString(),
+    };
 
-  if (!bookingData || !bookingData.startTime || !bookingData.endTime) {
-    return (
-      <FlatList
-        data={dummyData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.bookingItem}>
-            <Text style={styles.bookingText}>{item.location}</Text>
-            <Text style={styles.bookingText}>{item.date}</Text>
-            <Text style={styles.bookingText}>Rs {item.price}</Text>
-          </View>
-        )}
-        contentContainerStyle={styles.listContainer}
-      />
-    );
-  }
+    setNewlyCompletedBooking(completedBooking); // Save locally for the Completed UI
+    dispatch(addCompletedBooking(completedBooking)); // Save to Redux
+    dispatch(resetParkingData()); // Clear active booking
 
-  return (
+    setShowCompleted(true); // Show Completed UI
+  };
+
+  const handleEndParking = () => {
+    // Navigate to Wallet and reset newly completed booking
+    navigation.navigate("Wallet");
+    setShowCompleted(false); // Reset Complete UI
+    setNewlyCompletedBooking(null); // Clear local completed booking data
+  };
+
+  const renderCompletedUI = () => (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.carModel}>{bookingData.name || "N/A"}</Text>
-        <Text style={styles.carDescription}>
-          Parking Location: {bookingData.location || "N/A"}
-        </Text>
-        <Text style={styles.priceText}>Price: Rs {bookingData.price || 0} /hr</Text>
+      <Text style={styles.carModel}>{newlyCompletedBooking?.name || "N/A"}</Text>
+      <Text style={styles.carDescription}>
+        Parking Location: {newlyCompletedBooking?.location || "N/A"}
+      </Text>
+      <Text style={styles.priceText}>
+        Price: ${newlyCompletedBooking?.price || 0}
+      </Text>
+      <View style={styles.completedStatus}>
+        <Text style={styles.completedText}>Completed</Text>
       </View>
-
-      <View style={styles.progressContainer}>
-        <View style={styles.carImageContainer}>
-          <Image
-            source={require("../../Images/car1.png")}
-            style={styles.carImage}
-          />
-          <View
-            style={[styles.greenOverlay, { height: progressHeight }]}>
-            <Text style={styles.overlayText}>{currentTime >= new Date(bookingData.endTime).getTime() ? 'Done' : 'In Progress'}</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.timerContainer}>
-        <Text style={styles.timerText}>
-          Slot Number: {bookingData.slot || "N/A"}
-        </Text>
-        <Text style={styles.timerText}>
-          Start Time: {bookingData.startTime || "N/A"}
-        </Text>
-        <Text style={styles.timerText}>
-          End Time: {bookingData.endTime || "N/A"}
-        </Text>
-      </View>
-
-      <TouchableOpacity style={styles.stopButton} onPress={() => navigation.navigate("Wallet")}>
-        <Text style={styles.stopButtonText}>{buttonText}</Text>
+      <Image source={require("../../Images/car1.png")} style={styles.carImage} />
+      <TouchableOpacity
+        style={styles.stopButton}
+        onPress={handleEndParking}
+      >
+        <Text style={styles.stopButtonText}>End Parking</Text>
       </TouchableOpacity>
     </View>
   );
+
+  const renderActiveBooking = () => {
+    const progress = Math.min(
+      ((currentTime - new Date(parkingData.startTime)) /
+        (new Date(parkingData.endTime) - new Date(parkingData.startTime))) *
+        100,
+      100
+    );
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.carModel}>{parkingData.name || "N/A"}</Text>
+          <Text style={styles.carDescription}>
+            Parking Location: {parkingData.location || "N/A"}
+          </Text>
+          <Text style={styles.priceText}>Price: Rs {parkingData.price || 0} /hr</Text>
+        </View>
+        <View style={styles.progressContainer}>
+          <View style={styles.carImageContainer}>
+            <Image
+              source={require("../../Images/car1.png")}
+              style={styles.carImage}
+            />
+            <View
+              style={[
+                styles.greenOverlay,
+                { height: `${progress}%` },
+              ]}
+            >
+              <Text style={styles.overlayText}>
+                {progress === 100 ? "Done" : "In Progress"}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.timerContainer}>
+          <Text style={styles.timerText}>
+            Slot Number: {parkingData.slot || "N/A"}
+          </Text>
+          <Text style={styles.timerText}>
+            Start Time: {parkingData.startTime || "N/A"}
+          </Text>
+          <Text style={styles.timerText}>
+            End Time: {parkingData.endTime || "N/A"}
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.stopButton} onPress={handleStopParking}>
+          <Text style={styles.stopButtonText}>Stop</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const renderPreviousBookings = () => (
+    <FlatList
+      data={[...completedBookings, ...dummyData]} // Combine completed bookings and dummy data
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
+        <View style={styles.bookingItem}>
+          <Text style={styles.bookingText}>{item.location}</Text>
+          <Text style={styles.bookingText}>{item.date}</Text>
+          <Text style={styles.bookingText}>Rs {item.price}</Text>
+        </View>
+      )}
+      contentContainerStyle={styles.listContainer}
+    />
+  );
+
+  if (showCompleted) return renderCompletedUI();
+  if (parkingData.startTime && parkingData.endTime) return renderActiveBooking();
+  return renderPreviousBookings();
 }
 
 const styles = StyleSheet.create({
@@ -155,6 +194,17 @@ const styles = StyleSheet.create({
   priceText: {
     fontSize: 18,
     color: "white",
+  },
+  completedStatus: {
+    backgroundColor: "green",
+    padding: 10,
+    borderRadius: 5,
+    marginVertical: 20,
+  },
+  completedText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   progressContainer: {
     marginVertical: 20,
@@ -202,15 +252,15 @@ const styles = StyleSheet.create({
   },
   bookingItem: {
     backgroundColor: "white",
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 15,
     marginVertical: 10,
     borderRadius: 10,
     width: "90%",
     alignSelf: "center",
-    gap:10,
+    gap: 10,
   },
   bookingText: {
     flex: 1,

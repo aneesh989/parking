@@ -13,13 +13,13 @@ import { useSelector } from "react-redux";
 
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux"; // Import useDispatch
-import { setParkingData } from "../../../Redux/parkingSlice"; // Import Redux action
+import { setParkingData } from "../../../Redux/parkingSlice"; 
 import colors from "../../commons/Colors";
 
 export default function ParkingApp() {
   const { name } = useSelector((state: any) => state.user);
   const navigation = useNavigation();
-  const dispatch = useDispatch(); // Initialize dispatch
+  const dispatch = useDispatch(); 
   const [selectedVehicle, setSelectedVehicle] = useState("Car");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -108,29 +108,17 @@ export default function ParkingApp() {
   ];
    
 
-  const calculatePrice = (price) => {
-    switch (selectedVehicle) {
-      case "Bike":
-        return price / 2;
-      case "Van":
-        return price * 2;
-      case "Scooter":
-        return price / 2;
-      default:
-        return price;
-    }
-  };
-
   const filteredData = parkingData.filter(
     (item) =>
       item.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   const handleParkingSelection = (item) => {
     const parkingDetails = {
       name: item.name,
       location: item.location,
-      price: calculatePrice(item.price),
+      price: item.price,
       availability: item.availability,
     };
 
@@ -144,33 +132,31 @@ export default function ParkingApp() {
   const renderParkingItem = ({ item }) => (
     <TouchableOpacity
       style={styles.parkingItem}
-      onPress={() => handleParkingSelection(item)} // Call handleParkingSelection
+      onPress={() => handleParkingSelection(item)}
     >
-      <Image source={{ uri: item.image }} style={styles.parkingImage} />
+      <Image source={item.image} style={styles.parkingImage} />
       <View style={styles.parkingDetails}>
         <Text style={styles.parkingName}>{item.name}</Text>
         <Text style={styles.parkingLocation}>{item.location}</Text>
-        <Text style={styles.parkingPrice}>
-          ₹ {calculatePrice(item.price)} /hr
-        </Text>
+        <Text style={styles.parkingPrice}>Rs {item.price} /hr</Text>
       </View>
     </TouchableOpacity>
   );
+
   return (
+    
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Image
           source={require("../../Images/avtar.png")}
           style={styles.profileImage}
         />
-        <Text style={styles.greeting}>Good Morning, {name}</Text>
+          <Text style={styles.greeting}>Good Morning, {name}</Text>
         <Ionicons name="notifications-outline" size={24} color="black" />
       </View>
 
       <Text style={styles.title}>Find the best place to park</Text>
 
-      {/* Search Bar */}
       <View style={styles.searchBar}>
         <Ionicons name="search" size={20} color="gray" />
         <TextInput
@@ -182,55 +168,6 @@ export default function ParkingApp() {
         />
       </View>
 
-      {/* Vehicle Selection */}
-      <View style={styles.iconContainer}>
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() => setSelectedVehicle("Car")}
-        >
-          <FontAwesome5
-            name="car"
-            size={20}
-            color={selectedVehicle === "Car" ? colors.themeColor : "gray"}
-          />
-          <Text style={styles.iconLabel}>Car</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() => setSelectedVehicle("Bike")}
-        >
-          <FontAwesome5
-            name="bicycle"
-            size={20}
-            color={selectedVehicle === "Bike" ? colors.themeColor : "gray"}
-          />
-          <Text style={styles.iconLabel}>Bike</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() => setSelectedVehicle("Van")}
-        >
-          <FontAwesome5
-            name="truck"
-            size={20}
-            color={selectedVehicle === "Van" ? colors.themeColor : "gray"}
-          />
-          <Text style={styles.iconLabel}>Van</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() => setSelectedVehicle("Scooter")}
-        >
-          <FontAwesome5
-            name="motorcycle"
-            size={20}
-            color={selectedVehicle === "Scooter" ? colors.themeColor : "gray"}
-          />
-          <Text style={styles.iconLabel}>Scooter</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Parking Nearby List */}
       <Text style={styles.sectionTitle}>Parking Nearby</Text>
       <FlatList
         data={filteredData}
@@ -281,19 +218,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     padding: 14,
   },
-  iconContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginVertical: 20,
-  },
-  iconButton: {
-    alignItems: "center",
-  },
-  iconLabel: {
-    marginTop: 5,
-    color: "#555",
-    fontSize: 12,
-  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
@@ -329,18 +253,5 @@ const styles = StyleSheet.create({
   parkingPrice: {
     color: colors.themeColor,
     fontWeight: "bold",
-  },
-  bottomTabs: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 10,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    elevation: 5,
   },
 });

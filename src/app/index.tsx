@@ -95,8 +95,8 @@ const App = () => {
         options={{ headerShown: false }}
       />
       
-      <Stack.Screen
-        name="Booking"
+      {/* <Stack.Screen
+        name="Bookings"
         component={AllBookings}
         options={{ headerShown: false }}
       />
@@ -104,7 +104,7 @@ const App = () => {
         name="Wallet"
         component={Wallet}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="CardDetails"
         component={CardDetails}

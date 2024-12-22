@@ -4,6 +4,7 @@ const userInitialState = {
   name: "",
   role: "",
   email: "",
+  wallet: 0, 
 };
 
 const userSlice = createSlice({
@@ -11,15 +12,17 @@ const userSlice = createSlice({
   initialState: userInitialState,
   reducers: {
     setUserData: (state, action) => {
-      const { name, role, email } = action.payload;
+      const { name, role, email, wallet } = action.payload;
       state.name = name;
       state.role = role;
       state.email = email;
+      state.wallet = wallet;
     },
     resetUserData: (state) => {
       state.name = "";
       state.role = "";
       state.email = "";
+      state.wallet = 0;
     },
   },
 });

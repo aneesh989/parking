@@ -86,11 +86,9 @@ const GarageApp = ({ navigation }: { navigation: any }) => {
       alert("Please select an end time");
       return;
     }
-
-    // Update Redux with the selected slot and times
     dispatch(
       setParkingData({
-        ...parkingData, // Keep existing data (location, price, etc.)
+        ...parkingData, 
         slot: selectedSlot?.name,
         startTime,
         endTime,
@@ -98,7 +96,8 @@ const GarageApp = ({ navigation }: { navigation: any }) => {
     );
 
     setCheckoutVisible(false);
-    navigation.navigate("Booking"); // Navigate to Booking page
+    navigation.navigate("Home", { screen: "Bookings" });
+
   };
 
   return (

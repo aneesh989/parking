@@ -6,9 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 const ProfileScreen = () => {
-  const { name} = useSelector((state: any) => state.user);
+  const name = useSelector((state:any) => state.user.name);
   const navigation = useNavigation();
-  // const dispatch = useDispatch();
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>

@@ -56,7 +56,12 @@ const Login = ({ navigation }) => {
 
     if (user) {
       // Save data to AsyncStorage and Redux
-      const userData = { name: user.name, role: user.role, email: user.username };
+      const userData = { 
+        name: user.name, 
+        role: user.role, 
+        email: user.username, 
+        wallet: user.wallet 
+      };
       await storeData(userData);
       dispatch(setUserData(userData));
 

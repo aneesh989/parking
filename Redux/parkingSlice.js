@@ -7,6 +7,7 @@ const initialState = {
   slot: "",
   startTime: "",
   endTime: "",
+  completedBookings: [], // Array to store completed bookings
 };
 
 const parkingSlice = createSlice({
@@ -30,8 +31,11 @@ const parkingSlice = createSlice({
       state.startTime = "";
       state.endTime = "";
     },
+    addCompletedBooking: (state, action) => {
+      state.completedBookings.push(action.payload); // Add completed booking to the array
+    },
   },
 });
 
-export const { setParkingData, resetParkingData } = parkingSlice.actions;
+export const { setParkingData, resetParkingData, addCompletedBooking } = parkingSlice.actions;
 export default parkingSlice.reducer;

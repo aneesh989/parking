@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { useSelector } from "react-redux";
 
 const WalletPage = () => {
+  const wallet = useSelector((state:any) => state.user.wallet);
   const cards = [
     {
       id: '1',
@@ -44,7 +46,7 @@ const WalletPage = () => {
           style={styles.profileImage}
         />
             <View>
-              <Text style={styles.accountBalance}>Balance Rs:1200</Text>
+              <Text style={styles.accountBalance}>Balance Rs:{wallet}</Text>
               <Text style={styles.accountLabel}>Account</Text>
             </View>
           </View>
