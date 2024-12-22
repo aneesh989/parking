@@ -12,7 +12,7 @@ import {
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import dataset from "./dataset"; // Import dataset
+import dataset from "./dataset"; 
 import colors from "../../commons/Colors";
 import Headerx from "../../components/header";
 
@@ -67,9 +67,9 @@ const Login = ({ navigation }) => {
 
       // Navigate based on role
       if (user.role === "host") {
-        navigation.navigate("HostDrawer");
+        navigation.navigate("HostHome");
       } else if (user.role === "user") {
-        navigation.navigate("Drawer");
+        navigation.navigate("Home");
       }
     } else {
       Toast.show({

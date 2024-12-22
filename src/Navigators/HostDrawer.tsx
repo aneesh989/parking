@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AllBookings from '../screens/HostScreens/AllBookings';
 import MyMap from '../screens/Map';
-import EWallet from '../screens/UserScreens/EWallet';
+import EWallet from '../app/User/Wallet';
 import VisionCamera2 from '../screens/QRCheckout';
 import Profile from '../screens/HostScreens/Profile';
 import HostCustomDrawer from '../screens/HostScreens/HostCustomDrawer';
@@ -13,7 +13,7 @@ const Drawer = createDrawerNavigator();
  function HostDrawer({ navigation }) {
   return (
     <Drawer.Navigator>
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="ParkingBookings"
         component={AllBookings}
         options={{headerShown: false}}
@@ -32,7 +32,7 @@ const Drawer = createDrawerNavigator();
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
-      /> */}
+      />
     </Drawer.Navigator>
   );
 }

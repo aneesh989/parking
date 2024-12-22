@@ -5,7 +5,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import OnBoarding from '../screens/OnBoarding'; 
 import DrawerNavigator from '../Navigators/DrawerNavigator';
 import HostDrawer from '../Navigators/HostDrawer';
-import Home from '../screens/UserScreens/HomeScreen';
 import Login from '../screens/commonScreens/Login';
 import SignUp from '../screens/HostScreens/SignUp';
 import MyMap from '../screens/Map';
@@ -15,15 +14,14 @@ import VisionCamera from '../screens/QRScanning';
 import VisionCamera2 from '../screens/QRCheckout';
 import AddRemoveInputField from '../screens/dynamic';
 import Imge from '../screens/HostScreens/ParkingRegistration';
-import AllBookings from '.././app/User/bookings';
 import CardDetails from '../screens/UserScreens/CardDetails';
 import Settings from '../screens/UserScreens/Settings';
 import FindParking from './User/FindParking';
 import Garage from './User/Garage';
 import SplashScreen from '../screens/UserScreens/SplashScreen';
 import ForgetPassword from '../screens/commonScreens/ForgetPassword';
-import HomeD from './User/Home';
-import Wallet from './User/Wallet';
+import Home from './User/Home';
+import HostHome from './Host/HostHome';
 import { Provider } from 'react-redux'; // Import Provider
 import store from '../../Redux/Store'; // Import the Redux store
 
@@ -33,7 +31,7 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <Provider store={store}>
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="SplashScreen">
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
@@ -66,7 +64,12 @@ const App = () => {
       />
       <Stack.Screen
         name="Home"
-        component={HomeD}
+        component={Home}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="HostHome"
+        component={HostHome}
         options={{ headerShown: false }}
       />
       <Stack.Screen

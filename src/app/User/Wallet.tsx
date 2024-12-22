@@ -3,25 +3,25 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react
 import { useSelector } from "react-redux";
 
 const WalletPage = () => {
-  const wallet = useSelector((state:any) => state.user.wallet);
-  const cards = [
-    {
-      id: '1',
-      type: 'Mastercard',
-      number: '3056****5904',
-      holder: 'Danish',
-      expiry: '06/26',
-      icon: require('../../Images//masterCard.png'), // Replace with the actual path to your Mastercard logo
-    },
-    {
-      id: '2',
-      type: 'Visa Electron',
-      number: '5213****4854',
-      holder: 'Danish',
-      expiry: '06/26',
-      icon: require('../../Images/visa.png'), // Replace with the actual path to your Visa logo
-    },
-  ];
+  const {wallet,name} = useSelector((state:any) => state.user);
+    const cards = [
+      {
+        id: '1',
+        type: 'Mastercard',
+        number: '3056****5904',
+        holder: name,
+        expiry: '06/26',
+        icon: require('../../Images//masterCard.png'), // Replace with the actual path to your Mastercard logo
+      },
+      {
+        id: '2',
+        type: 'Visa Electron',
+        number: '5213****4854',
+        holder: name,
+        expiry: '06/26',
+        icon: require('../../Images/visa.png'), // Replace with the actual path to your Visa logo
+      },
+    ];
 
   return (
     <View style={styles.container}>
