@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { setParkingData } from "../../../Redux/parkingSlice"; 
-import colors from "../../commons/Colors";
+import colors from "../commons/Colors";
 
 export default function ParkingApp() {
   const { name } = useSelector((state: any) => state.user);
@@ -37,7 +37,7 @@ export default function ParkingApp() {
       id: '2',
       name: 'WSCC Main Garage',
       location: 'DHA 5, Karachi',
-      price: 150,
+      price: 90,
       availability: '15 spots',
       image: require('../../Images/ParkingSpots/2.webp'), // Local image
     },
@@ -53,7 +53,7 @@ export default function ParkingApp() {
       id: '4',
       name: 'City Mall Parking',
       location: 'Gulshan-e-Iqbal, Karachi',
-      price: 120,
+      price: 100,
       availability: '18 spots',
       image: require('../../Images/ParkingSpots/4.webp'), // Local image
     },
@@ -61,7 +61,7 @@ export default function ParkingApp() {
       id: '5',
       name: 'Hyperstar Parking',
       location: 'DHA 5, Karachi',
-      price: 90,
+      price: 70,
       availability: '22 spots',
       image: require('../../Images/ParkingSpots/5.webp'), // Local image
     },
@@ -69,7 +69,7 @@ export default function ParkingApp() {
       id: '6',
       name: 'Mall of Karachi Parking',
       location: 'Tariq Road, Karachi',
-      price: 130,
+      price: 100,
       availability: '10 spots',
       image: require('../../Images/ParkingSpots/6.webp'), // Local image
     },
@@ -77,7 +77,7 @@ export default function ParkingApp() {
       id: '7',
       name: 'Clifton Beach Parking',
       location: 'Clifton, Karachi',
-      price: 110,
+      price: 80,
       availability: '30 spots',
       image: require('../../Images/ParkingSpots/7.webp'), // Local image
     },
@@ -85,7 +85,7 @@ export default function ParkingApp() {
       id: '8',
       name: 'Shahrah-e-Faisal Parking',
       location: 'Shahrah-e-Faisal, Karachi',
-      price: 140,
+      price: 90,
       availability: '12 spots',
       image: require('../../Images/ParkingSpots/8.webp'), // Local image
     },
@@ -93,7 +93,7 @@ export default function ParkingApp() {
       id: '9',
       name: 'Korangi Industrial Parking',
       location: 'Korangi, Karachi',
-      price: 100,
+      price: 75,
       availability: '20 spots',
       image: require('../../Images/ParkingSpots/2.webp'), // Local image
     },

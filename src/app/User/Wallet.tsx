@@ -27,13 +27,7 @@ const WalletPage = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.backButton}>
-          <Text style={styles.backButtonText}>{'<'}</Text>
-        </TouchableOpacity>
         <Text style={styles.headerText}>Select payment method</Text>
-        {/* <TouchableOpacity style={styles.cardIconContainer}>
-          <Text style={styles.cardIcon}>\uD83D\uDCB3</Text>
-        </TouchableOpacity> */}
       </View>
 
       {/* Account Section */}

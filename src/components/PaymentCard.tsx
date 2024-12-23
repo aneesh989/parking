@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback,
   } from 'react-native';
   import React from 'react';
-  import colors from '../commons/Colors';
+  import colors from '../app/commons/Colors';
   import {SCREEN_WIDTH,SCREEN_HEIGHT} from '../components/units';
 //   import MasterIcon from '../../assets/svgs/master.svg';
 //   import TickIcon from '../../assets/svgs/tickSquare.svg';

@@ -24,7 +24,7 @@ const OnboardingScreen = () => {
             <View style={styles.shadowLarge}></View>
             <View style={styles.lightEffect}></View>
             <Image
-              source={require("../Images/car1.png")}
+              source={require("../../Images/car1.png")}
               style={styles.image}
               resizeMode="contain"
             />
@@ -40,12 +40,12 @@ const OnboardingScreen = () => {
         <View>
           <View style={styles.imageContainerTop}>
             <Image
-              source={require("../Images/road.png")}
+              source={require("../../Images/road.png")}
               style={styles.roadImage}
               resizeMode="stretch"
             />
             <Image
-              source={require("../Images/car1.png")}
+              source={require("../../Images/car1.png")}
               style={[styles.carImageOnRoad]}
               resizeMode="contain"
             />
@@ -54,7 +54,7 @@ const OnboardingScreen = () => {
             <Text style={styles.subTitle}>Quick Navigation</Text>
             <Text style={styles.title}>Navigate seamlessly with ease</Text>
             <Image
-              source={require("../Images/map.png")}
+              source={require("../../Images/map.png")}
               style={styles.mapImage}
               resizeMode="contain"
             />
@@ -70,7 +70,7 @@ const OnboardingScreen = () => {
             <View style={styles.shadowLarge}></View>
             <View style={styles.lightEffect}></View>
             <Image
-              source={require("../Images/car1.png")}
+              source={require("../../Images/car1.png")}
               style={[styles.carImageTopRight, { transform: [{ rotate: "180deg" }] }]}
               resizeMode="contain"
             />
@@ -79,7 +79,7 @@ const OnboardingScreen = () => {
             <Text style={styles.subTitle}>Easy Payment Method</Text>
             <Text style={styles.title}>Make transactions simple and fast</Text>
             <Image
-              source={require("../Images/easypayment.png")}
+              source={require("../../Images/easypayment.png")}
               style={styles.paymentImageCenter}
               resizeMode="contain"
             />

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
-import colors from '../commons/Colors';
+import colors from '../app/commons/Colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from "react-native-vector-icons/FontAwesome";
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,10 +16,11 @@ const Headerx = ({ headerName }) => {
       {navigation && navigation.openDrawer ? (
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Icon name="menu" size={30} color={colors.themeColor} />
+          <Icon name="menu" size={20} color={colors.themeColor} />
         </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="chevron-left" size={SCREEN_WIDTH / 15} color={colors.themeColor} />
+          <Icon name="arrow-left" size={20} color="#fff" style={styles.backIcon} />
         </TouchableOpacity>
       )}
 

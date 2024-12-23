@@ -11,7 +11,7 @@ const ProfileScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Icon name="arrow-left" size={20} color="#fff" style={styles.backIcon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>

@@ -8,8 +8,9 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import colors from '../../commons/Colors';
+import colors from '../commons/Colors';
 import Headerx from '../../components/header';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -17,6 +18,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const Settings = props => {
   return (
     <View style={styles.container}>
+               
       <Headerx navigation={props?.navigation} headerName={'Settings'}></Headerx>
       <View
         style={{

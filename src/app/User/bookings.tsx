@@ -12,8 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 import { setParkingData, resetParkingData, addCompletedBooking } from "../../../Redux/parkingSlice";
 
 const dummyData = [
-  { id: "1", location: "Sector 18, Noida", price: "50", date: "15 Dec 2024" },
-  { id: "2", location: "Tariq Road, Karachi", price: "70", date: "14 Dec 2024" },
+  { id: "1", location: "Sector 18, Noida", price: "221", date: "15 Dec 2024" },
+  { id: "2", location: "Tariq Road, Karachi", price: "255", date: "14 Dec 2024" },
   { id: "3", location: "Clifton, Karachi", price: "120", date: "12 Dec 2024" },
   { id: "4", location: "DHA 5, Karachi", price: "100", date: "10 Dec 2024" },
   { id: "5", location: "North Nazimabad, Karachi", price: "80", date: "9 Dec 2024" },
@@ -44,25 +44,77 @@ export default function BookingScreen() {
 
     return () => clearInterval(timer);
   }, [currentTime, parkingData]);
-
   const handleStopParking = () => {
-    const completedBooking = {
-      id: new Date().getTime(),
-      location: parkingData.location,
-      name: parkingData.name,
-      price: parkingData.price,
-      slot: parkingData.slot,
-      startTime: parkingData.startTime,
-      endTime: parkingData.endTime,
-      date: new Date().toLocaleDateString(),
-    };
+    try {
+        // Extract hours and minutes from the time strings
+        const parseTime = (timeString) => {
+            const [time, modifier] = timeString.split(" "); // Split time and AM/PM
+            let [hours, minutes] = time.split(":").map(Number); // Split into hours and minutes
+            if (modifier === "PM" && hours !== 12) hours += 12; // Convert PM to 24-hour format
+            if (modifier === "AM" && hours === 12) hours = 0; // Convert 12 AM to 0 hours
+            return { hours, minutes };
+        };
 
-    setNewlyCompletedBooking(completedBooking); // Save locally for the Completed UI
-    dispatch(addCompletedBooking(completedBooking)); // Save to Redux
-    dispatch(resetParkingData()); // Clear active booking
+        const currentDate = new Date();
+        const { hours: startHours, minutes: startMinutes } = parseTime(parkingData.startTime);
+        const { hours: endHours, minutes: endMinutes } = parseTime(parkingData.endTime);
 
-    setShowCompleted(true); // Show Completed UI
-  };
+        const startTime = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            startHours,
+            startMinutes
+        );
+
+        const endTime = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            endHours,
+            endMinutes
+        );
+
+        if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
+            console.error("Invalid start or end time", { startTime, endTime });
+            return;
+        }
+
+        const totalMinutes = Math.ceil((endTime - startTime) / (1000 * 60)); // Total minutes between start and end time
+        console.log("Total Minutes:", totalMinutes);
+
+        const pricePerMinute = parkingData.price / 60; // Calculate price per minute
+        if (isNaN(pricePerMinute)) {
+            console.error("Invalid price per minute", { price: parkingData.price });
+            return;
+        }
+
+        const newPrice = (pricePerMinute * totalMinutes).toFixed(2); // Calculate new price based on total minutes and round to 2 decimal places
+        console.log("New Price:", newPrice);
+
+        const completedBooking = {
+            id: new Date().getTime(),
+            location: parkingData.location,
+            name: parkingData.name,
+            price: newPrice, // Use the calculated new price
+            slot: parkingData.slot,
+            startTime: parkingData.startTime, // Use start time from Redux
+            endTime: parkingData.endTime, // Use end time from Redux
+            date: new Date().toLocaleDateString(),
+        };
+
+        setNewlyCompletedBooking(completedBooking); // Save locally for the Completed UI
+        dispatch(addCompletedBooking(completedBooking)); // Save to Redux
+        dispatch(resetParkingData()); // Clear active booking
+
+        setShowCompleted(true); // Show Completed UI
+    } catch (error) {
+        console.error("Error in handleStopParking:", error);
+    }
+};
+
+
+
 
   const handleEndParking = () => {
     // Navigate to Wallet and reset newly completed booking
@@ -73,25 +125,34 @@ export default function BookingScreen() {
 
   const renderCompletedUI = () => (
     <View style={styles.container}>
-      <Text style={styles.carModel}>{newlyCompletedBooking?.name || "N/A"}</Text>
-      <Text style={styles.carDescription}>
-        Parking Location: {newlyCompletedBooking?.location || "N/A"}
-      </Text>
-      <Text style={styles.priceText}>
-        Price: ${newlyCompletedBooking?.price || 0}
-      </Text>
-      <View style={styles.completedStatus}>
-        <Text style={styles.completedText}>Completed</Text>
-      </View>
-      <Image source={require("../../Images/car1.png")} style={styles.carImage} />
-      <TouchableOpacity
-        style={styles.stopButton}
-        onPress={handleEndParking}
-      >
-        <Text style={styles.stopButtonText}>End Parking</Text>
-      </TouchableOpacity>
+        <Text style={styles.carModel}>{newlyCompletedBooking?.name || "N/A"}</Text>
+        <Text style={styles.carDescription}>
+            Parking Location: {newlyCompletedBooking?.location || "N/A"}
+        </Text>
+        <Text style={styles.timerText}>
+            Start Time: {newlyCompletedBooking?.startTime || "N/A"}
+        </Text>
+        <Text style={styles.timerText}>
+            End Time: {newlyCompletedBooking?.endTime || "N/A"}
+        </Text>
+        <Text style={styles.priceText}>
+            Total Price: Rs {newlyCompletedBooking?.price || 0}
+        </Text>
+        <View style={styles.completedStatus}>
+            <Text style={styles.completedText}>Completed</Text>
+        </View>
+        <Image source={require("../../Images/car1.png")} style={styles.carImage} />
+        <TouchableOpacity
+            style={styles.stopButton}
+            onPress={handleEndParking}
+        >
+            <Text style={styles.stopButtonText}>Pay</Text>
+        </TouchableOpacity>
     </View>
-  );
+);
+
+
+
 
   const renderActiveBooking = () => {
     const progress = Math.min(

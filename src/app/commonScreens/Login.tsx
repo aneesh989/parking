@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import dataset from "./dataset"; 
-import colors from "../../commons/Colors";
+import colors from "../commons/Colors";
 import Headerx from "../../components/header";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;

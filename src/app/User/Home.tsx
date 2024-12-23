@@ -6,7 +6,7 @@ import FindParking from './FindParking';
 import Wallet from './Wallet';
 import Bookings from './bookings';
 import Profile from './profile';
-import colors from '../../commons/Colors';
+import colors from '../commons/Colors';
 
 Feather.loadFont();
 MaterialCommunityIcons.loadFont();
