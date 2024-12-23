@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import { ProgressBar } from "react-native-paper";
 
 const dummyBookings = Array.from({ length: 100 }, (_, index) => {
   const locations = [
@@ -37,12 +38,13 @@ const dummyBookings = Array.from({ length: 100 }, (_, index) => {
     location,
     name,
     price,
-    date: date.toLocaleDateString(),
+    date: date,
     startTime,
     endTime,
     hours,
     numberPlate,
     carModel,
+    completed: Math.random() > 0.5, // Randomly set completed bookings
   };
 });
 
@@ -53,8 +55,16 @@ export default function HostBookingPage() {
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() - daysAgo);
     return dummyBookings.filter(
-      (booking) => new Date(booking.date).toLocaleDateString() === targetDate.toLocaleDateString()
+      (booking) => booking.date.toDateString() === targetDate.toDateString()
     );
+  };
+
+  const sortBookings = (bookings) => {
+    return bookings.sort((a, b) => a.date - b.date || a.startTime.localeCompare(b.startTime));
+  };
+
+  const calculateProgress = (bookings) => {
+    return bookings.length / dummyBookings.length;
   };
 
   const renderBookingDetails = () => (
@@ -68,7 +78,7 @@ export default function HostBookingPage() {
       <Text style={styles.detailText}>Name: {selectedBooking.name}</Text>
       <Text style={styles.detailText}>Location: {selectedBooking.location}</Text>
       <Text style={styles.detailText}>Price: Rs {selectedBooking.price}</Text>
-      <Text style={styles.detailText}>Date: {selectedBooking.date}</Text>
+      <Text style={styles.detailText}>Date: {selectedBooking.date.toDateString()}</Text>
       <Text style={styles.detailText}>Start Time: {selectedBooking.startTime}</Text>
       <Text style={styles.detailText}>End Time: {selectedBooking.endTime}</Text>
       <Text style={styles.detailText}>Number of Hours: {selectedBooking.hours}</Text>
@@ -77,20 +87,25 @@ export default function HostBookingPage() {
     </View>
   );
 
-  const renderBookingList = (data, title) => (
-    <View>
-      <Text style={styles.sectionTitle}>{title}</Text>
+  const renderBookingList = (data, title, progress, style) => (
+    <View style={styles.sectionContainer}>
+      <Text style={[styles.sectionTitle, style]}>{title}</Text>
+      <ProgressBar
+        progress={progress}
+        color="#0192b1"
+        style={styles.progressBar}
+      />
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles.bookingItem}
+            style={[styles.bookingItem, style]}
             onPress={() => setSelectedBooking(item)}
           >
             <Text style={styles.bookingText}>Location: {item.location}</Text>
             <Text style={styles.bookingText}>Customer: {item.name}</Text>
-            <Text style={styles.bookingText}>Date: {item.date}</Text>
+            <Text style={styles.bookingText}>Date: {item.date.toDateString()}</Text>
           </TouchableOpacity>
         )}
         contentContainerStyle={styles.listContainer}
@@ -100,15 +115,41 @@ export default function HostBookingPage() {
 
   if (selectedBooking) return renderBookingDetails();
 
-  const activeBookings = dummyBookings.slice(0, 30); // First 30 items
-  const todayBookings = filterBookingsByDate(0).slice(0, 30); // Next 30 items
-  const yesterdayBookings = filterBookingsByDate(1).slice(0, 30); // Remaining items
+  const todayBookings = sortBookings(filterBookingsByDate(0));
+  const yesterdayBookings = sortBookings(filterBookingsByDate(1));
+  const activeBookings = sortBookings(
+    dummyBookings.filter((booking) => booking.date > new Date() && !booking.completed)
+  );
+  const completedBookings = sortBookings(
+    dummyBookings.filter((booking) => booking.completed)
+  );
 
   return (
     <View style={styles.container}>
-      {renderBookingList(activeBookings, "Active Bookings")}
-      {renderBookingList(todayBookings, "Today's Bookings")}
-      {renderBookingList(yesterdayBookings, "Yesterday's Bookings")}
+      {renderBookingList(
+        todayBookings,
+        "Today's Bookings",
+        calculateProgress(todayBookings),
+        { color: "#0192b1" }
+      )}
+      {renderBookingList(
+        activeBookings,
+        "Active Bookings",
+        calculateProgress(activeBookings),
+        { color: "#000000" }
+      )}
+      {renderBookingList(
+        completedBookings,
+        "Completed Bookings",
+        calculateProgress(completedBookings),
+        { color: "#4caf50" }
+      )}
+      {renderBookingList(
+        yesterdayBookings,
+        "Yesterday's Bookings",
+        calculateProgress(yesterdayBookings),
+        { color: "#7f8c8d" }
+      )}
     </View>
   );
 }
@@ -116,19 +157,25 @@ export default function HostBookingPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#ffffff",
     padding: 10,
+  },
+  sectionContainer: {
+    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginVertical: 10,
   },
+  progressBar: {
+    marginBottom: 10,
+  },
   listContainer: {
     paddingBottom: 20,
   },
   bookingItem: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#0192b1",
     padding: 15,
     borderRadius: 8,
     marginBottom: 10,
@@ -137,6 +184,7 @@ const styles = StyleSheet.create({
   bookingText: {
     fontSize: 14,
     marginBottom: 5,
+    color: "#ffffff",
   },
   detailsContainer: {
     flex: 1,
@@ -145,10 +193,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     elevation: 5,
     margin: 10,
+    borderColor: "#0192b1",
+    borderWidth: 2,
   },
   detailText: {
     fontSize: 16,
     marginBottom: 10,
+    color: "#000000",
   },
   closeButton: {
     alignSelf: "flex-end",

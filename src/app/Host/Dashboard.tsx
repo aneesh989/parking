@@ -1,44 +1,65 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { LineChart, BarChart, ProgressChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { LineChart, BarChart, ProgressChart, PieChart } from 'react-native-chart-kit';
+import { parkingData } from './DashboardData';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function HostDashboard() {
+  const defaultData = {
+    labels: [],
+    datasets: [{ data: [] }],
+  };
+
+  const revenueData = parkingData?.revenue || defaultData;
+  const expenseProfitData = parkingData?.expenseProfit || defaultData;
+  const usageStats = parkingData?.usageStats || { labels: [], data: [] };
+
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
-      <Text style={styles.header}>Host Dashboard</Text>
+      <Text style={styles.header}>Parking Host Dashboard</Text>
 
-      {/* Stats Section */}
+      {/* Summary Cards */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.summaryContainer}>
+        <View style={styles.summaryCard}>
+          <Text style={styles.summaryTitle}>Daily Revenue</Text>
+          <Text style={styles.summaryValue}>Rs:{parkingData.revenue.daily}</Text>
+        </View>
+        <View style={styles.summaryCard}>
+          <Text style={styles.summaryTitle}>Weekly Revenue</Text>
+          <Text style={styles.summaryValue}>Rs:{parkingData.revenue.weekly}</Text>
+        </View>
+        <View style={styles.summaryCard}>
+          <Text style={styles.summaryTitle}>Monthly Revenue</Text>
+          <Text style={styles.summaryValue}>Rs:{parkingData.revenue.monthly}</Text>
+        </View>
+        <View style={styles.summaryCard}>
+          <Text style={styles.summaryTitle}>Total Parking Slots</Text>
+          <Text style={styles.summaryValue}>{parkingData.totalSlots}</Text>
+        </View>
+        <View style={styles.summaryCard}>
+          <Text style={styles.summaryTitle}>Hours Utilized</Text>
+          <Text style={styles.summaryValue}>{parkingData.hoursUtilized} hrs</Text>
+        </View>
+      </ScrollView>
+
+      {/* Revenue Chart */}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Coders Types</Text>
+        <Text style={styles.cardTitle}>Revenue Overview</Text>
         <LineChart
-          data={{
-            labels: ['1m', '2m', '3m', '4m', '5m', '6m', '7m', '8m'],
-            datasets: [
-              { data: [20, 45, 28, 80, 99, 43, 50, 60], color: () => `#4CAF50` },
-              { data: [30, 70, 50, 60, 80, 90, 100, 120], color: () => `#2196F3` },
-            ],
-          }}
+          data={revenueData}
           width={screenWidth - 40}
           height={220}
           chartConfig={chartConfig}
         />
       </View>
 
-      {/* New Employees */}
+      {/* Expense vs Profit */}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>New Employees</Text>
+        <Text style={styles.cardTitle}>Expense vs Profit</Text>
         <BarChart
-          data={{
-            labels: ['2021', '2022'],
-            datasets: [
-              { data: [50, 80], color: () => `#4CAF50` },
-              { data: [60, 90], color: () => `#2196F3` },
-            ],
-          }}
+          data={expenseProfitData}
           width={screenWidth - 40}
           height={220}
           chartConfig={chartConfig}
@@ -46,20 +67,18 @@ export default function HostDashboard() {
         />
       </View>
 
-      {/* Last Data */}
+      {/* Usage Distribution */}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Last Data</Text>
-        <BarChart
-          data={{
-            labels: ['10k', '20k', '30k', '40k', '50k', '60k', '70k', '80k'],
-            datasets: [
-              { data: [10, 20, 30, 40, 50, 60, 70, 80], color: () => `#4CAF50` },
-            ],
-          }}
+        <Text style={styles.cardTitle}>Parking Usage Distribution</Text>
+        <PieChart
+          data={parkingData.usageDistribution}
           width={screenWidth - 40}
           height={220}
           chartConfig={chartConfig}
-          verticalLabelRotation={30}
+          accessor="population"
+          backgroundColor="transparent"
+          paddingLeft="15"
+          absolute
         />
       </View>
 
@@ -67,10 +86,7 @@ export default function HostDashboard() {
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Last Income</Text>
         <ProgressChart
-          data={{
-            labels: ['Apr', 'May', 'Jun'],
-            data: [0.5, 0.7, 0.8],
-          }}
+          data={usageStats}
           width={screenWidth - 40}
           height={220}
           strokeWidth={16}
@@ -92,11 +108,6 @@ const chartConfig = {
   style: {
     borderRadius: 16,
   },
-  propsForDots: {
-    r: '6',
-    strokeWidth: '2',
-    stroke: '#ffa726',
-  },
 };
 
 const styles = StyleSheet.create({
@@ -111,19 +122,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 20,
   },
+  summaryContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  summaryCard: {
+    backgroundColor: '#e0f7fa',
+    borderRadius: 10,
+    padding: 15,
+    marginHorizontal: 5,
+    width: 150,
+    alignItems: 'center',
+  },
+  summaryTitle: {
+    fontSize: 16,
+    color: '#00796b',
+    marginBottom: 10,
+  },
+  summaryValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#004d40',
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 10,
     marginVertical: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   cardTitle: {
     fontSize: 18,
